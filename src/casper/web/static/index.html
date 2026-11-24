@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="ghost">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -10,16 +10,24 @@
   <link rel="stylesheet" href="/static/theme.css">
 </head>
 <body>
+  <div class="ghost-backdrop" aria-hidden="true">
+    <div class="ghost-aura"></div>
+    <img src="/static/img/casper-mark.svg" alt="" class="ghost-watermark">
+  </div>
+
   <header class="topbar">
     <div class="brand">
-      <img src="/static/img/casper-logo-light.svg" alt="Casper — The Friendly Ghostwriter" class="brand-logo">
+      <img id="brand-logo" src="/static/img/casper-logo-dark.svg" alt="Casper — The Friendly Ghostwriter" class="brand-logo">
       <span class="badge-local">Localhost only</span>
     </div>
-    <nav class="tabs" role="tablist" aria-label="Casper views">
-      <button type="button" class="tab active" data-tab="write" role="tab" aria-selected="true">Write</button>
-      <button type="button" class="tab" data-tab="score" role="tab" aria-selected="false">Check a draft</button>
-      <button type="button" class="tab" data-tab="about" role="tab" aria-selected="false">About</button>
-    </nav>
+    <div class="topbar-controls">
+      <nav class="tabs" role="tablist" aria-label="Casper views">
+        <button type="button" class="tab active" data-tab="write" role="tab" aria-selected="true">Write</button>
+        <button type="button" class="tab" data-tab="score" role="tab" aria-selected="false">Check a draft</button>
+        <button type="button" class="tab" data-tab="about" role="tab" aria-selected="false">About</button>
+      </nav>
+      <button type="button" id="btn-theme" class="btn small secondary theme-toggle" aria-pressed="false">Theme: Ghostly</button>
+    </div>
   </header>
 
   <main class="container">
@@ -72,6 +80,13 @@
             <input id="w-token" type="password" disabled placeholder="Not required; Casper never uses API tokens">
           </label>
 
+          <div id="w-upload-zone" class="upload-zone">
+            <input id="w-file-upload" class="upload-input" type="file" accept=".txt,.md,.markdown,.adoc,.asciidoc,.pdf,.docx,.odt,.rtf,.tex,.html,.htm,.csv,.yaml,.yml,.rst,.org">
+            <label for="w-file-upload" class="btn small secondary upload-label">Upload file (.txt, .md, .adoc, .pdf, .docx, .odt, .rtf, .tex, .rst, .org...)</label>
+            <span class="upload-hint">or drop a file here</span>
+            <span id="w-upload-status" class="upload-status"></span>
+          </div>
+
           <label class="notes-field">
             <span>Source Notes</span>
             <textarea id="w-notes" rows="10" placeholder="Status: Rollout is on track at 95%.&#10;Progress: Completed staging validation.&#10;Risk: Legacy clients remain on TLS 1.1.&#10;Ask: Please approve the production window."></textarea>
@@ -93,6 +108,7 @@
           <div class="result-header">
             <h2>Output</h2>
             <div class="result-actions">
+              <select id="export-format" aria-label="Export format" class="export-select"></select>
               <button type="button" id="btn-copy" class="btn small secondary" disabled>Copy</button>
               <button type="button" id="btn-download" class="btn small secondary" disabled>Download</button>
             </div>
@@ -136,6 +152,12 @@
             <input id="s-raw" type="checkbox">
             <span>Score against raw generated profile only</span>
           </label>
+        </div>
+        <div id="s-upload-zone" class="upload-zone">
+          <input id="s-file-upload" class="upload-input" type="file" accept=".txt,.md,.markdown,.adoc,.asciidoc,.pdf,.docx,.odt,.rtf,.tex,.html,.htm,.csv,.yaml,.yml,.rst,.org">
+          <label for="s-file-upload" class="btn small secondary upload-label">Upload file (.txt, .md, .adoc, .pdf, .docx, .odt, .rtf, .tex, .rst, .org...)</label>
+          <span class="upload-hint">or drop a file here</span>
+          <span id="s-upload-status" class="upload-status"></span>
         </div>
         <label class="notes-field">
           <span>Draft Text</span>

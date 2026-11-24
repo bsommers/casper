@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import base64
+import binascii
 import json
 import threading
 import urllib.parse
@@ -20,9 +22,13 @@ from casper.errors import (
     SecurityError,
 )
 from casper.llm import CommandRunner
-from casper.models import Brief, FactKind
+from casper.loaders import SUPPORTED_UPLOAD_EXTENSIONS, load_bytes
+from casper.modalities import EXPORT_FORMATS, export_document
+from casper.models import BlockKind, Brief, Document, FactKind
 
 MAX_BODY_BYTES = 262_144
+MAX_UPLOAD_BODY_BYTES = 2_097_152
+MAX_UPLOAD_RAW_BYTES = 1_572_864
 MAX_NOTES_CHARS = 40_000
 MAX_SCORE_TEXT_CHARS = 60_000
 LOCK_TIMEOUT_SECONDS = 30.0
@@ -69,6 +75,10 @@ _GENERATE_ALLOWED_KEYS: frozenset[str] = frozenset(
     }
 )
 _SCORE_ALLOWED_KEYS: frozenset[str] = frozenset({"author", "text", "raw", "overlay"})
+_UPLOAD_ALLOWED_KEYS: frozenset[str] = frozenset({"filename", "content_base64"})
+_EXPORT_ALLOWED_KEYS: frozenset[str] = frozenset(
+    {"format", "text", "title", "facts", "fact_trace", "validation", "record"}
+)
 
 
 @dataclass(frozen=True)
@@ -192,6 +202,44 @@ def _check_allowed_keys(payload: Mapping[str, Any], allowed: frozenset[str]) -> 
         raise InputError(f"Unknown request field(s): {', '.join(unknown)}")
 
 
+def _sanitize_upload_filename(raw_name: str) -> str:
+    if (
+        not raw_name
+        or not raw_name.strip()
+        or "\x00" in raw_name
+        or "/" in raw_name
+        or "\\" in raw_name
+    ):
+        raise InputError("Invalid upload filename")
+    safe_name = Path(raw_name).name
+    if (
+        not safe_name
+        or safe_name in {".", ".."}
+        or "\x00" in safe_name
+        or "/" in safe_name
+        or "\\" in safe_name
+    ):
+        raise InputError("Invalid upload filename")
+    return safe_name
+
+
+def _document_to_editable_text(doc: Document) -> str:
+    parts: list[str] = []
+    for block in doc.blocks:
+        text = block.text.strip()
+        if not text:
+            continue
+        if block.kind == BlockKind.HEADING:
+            parts.append(f"## {text}")
+        elif block.kind == BlockKind.LIST_ITEM:
+            parts.append(f"- {text}")
+        else:
+            parts.append(text)
+    if parts:
+        return "\n\n".join(parts)
+    return (doc.title or "").strip()
+
+
 class App:
     """Pure, frameworkless HTTP request router enforcing Casper's security boundary."""
 
@@ -271,7 +319,13 @@ class App:
         mime = _STATIC_MIME.get(candidate.suffix.lower(), "application/octet-stream")
         return _build_response(200, candidate.read_bytes(), mime)
 
-    def _parse_json_post(self, hdrs: Mapping[str, str], body: bytes) -> dict[str, Any] | HttpResponse:
+    def _parse_json_post(
+        self,
+        hdrs: Mapping[str, str],
+        body: bytes,
+        *,
+        max_bytes: int = MAX_BODY_BYTES,
+    ) -> dict[str, Any] | HttpResponse:
         ctype = hdrs.get("content-type", "")
         media_type = ctype.split(";", 1)[0].strip().lower()
         if media_type != "application/json":
@@ -280,10 +334,10 @@ class App:
                 "Content-Type must be application/json",
                 "unsupported-media-type",
             )
-        if len(body) > MAX_BODY_BYTES:
+        if len(body) > max_bytes:
             return _error_response(
                 413,
-                f"Request body exceeds {MAX_BODY_BYTES} bytes",
+                f"Request body exceeds {max_bytes} bytes",
                 "payload-too-large",
             )
         try:
@@ -405,6 +459,69 @@ class App:
         )
         return _json_response(200, {"report": report.to_dict()})
 
+    def _handle_upload(self, payload: dict[str, Any]) -> HttpResponse:
+        _check_allowed_keys(payload, _UPLOAD_ALLOWED_KEYS)
+        safe_name = _sanitize_upload_filename(_require_str(payload, "filename"))
+        raw_b64 = _require_str(payload, "content_base64")
+        try:
+            raw_bytes = base64.b64decode(raw_b64, validate=True)
+        except (binascii.Error, ValueError) as exc:
+            raise InputError("Invalid base64 payload in 'content_base64'") from exc
+
+        if len(raw_bytes) > MAX_UPLOAD_RAW_BYTES:
+            raise PayloadTooLargeError(
+                f"Decoded upload exceeds maximum size of {MAX_UPLOAD_RAW_BYTES} bytes"
+            )
+
+        doc = load_bytes(raw_bytes, safe_name, max_bytes=MAX_UPLOAD_RAW_BYTES)
+        extracted_text = _document_to_editable_text(doc)
+        if not extracted_text:
+            raise InputError("Uploaded file contained no readable text")
+        if len(extracted_text) > MAX_SCORE_TEXT_CHARS:
+            raise PayloadTooLargeError(
+                f"Extracted text exceeds maximum length of {MAX_SCORE_TEXT_CHARS} characters"
+            )
+
+        return _json_response(
+            200,
+            {
+                "filename": safe_name,
+                "format": doc.format,
+                "title": doc.title,
+                "text": extracted_text,
+                "word_count": len(extracted_text.split()),
+                "notes": list(doc.notes),
+            },
+        )
+
+    def _handle_export(self, payload: dict[str, Any]) -> HttpResponse:
+        _check_allowed_keys(payload, _EXPORT_ALLOWED_KEYS)
+        fmt = _require_str(payload, "format")
+        text = _require_str(payload, "text")
+        if len(text) > MAX_SCORE_TEXT_CHARS:
+            raise PayloadTooLargeError(
+                f"Text exceeds maximum length of {MAX_SCORE_TEXT_CHARS} characters"
+            )
+        title = _optional_str(payload, "title")
+        metadata: dict[str, Any] = {}
+        for meta_key in ("facts", "fact_trace", "validation", "record"):
+            if meta_key in payload and payload[meta_key] is not None:
+                metadata[meta_key] = payload[meta_key]
+
+        payload_bytes, mime_type, filename = export_document(
+            text,
+            fmt,
+            title=title,
+            metadata=metadata or None,
+        )
+        safe_disp_name = filename.replace("\r", "").replace("\n", "").replace('"', "")
+        return _build_response(
+            200,
+            payload_bytes,
+            mime_type,
+            extra_headers={"Content-Disposition": f'attachment; filename="{safe_disp_name}"'},
+        )
+
     def handle(
         self,
         method: str,
@@ -433,7 +550,7 @@ class App:
             )
 
         is_get_route = (
-            clean_path in {"/", "/api/options", "/api/backend-status"}
+            clean_path in {"/", "/api/options", "/api/backend-status", "/api/formats"}
             or clean_path.startswith("/static/")
         )
         is_post_route = clean_path in {
@@ -441,6 +558,8 @@ class App:
             "/api/generate",
             "/api/score",
             "/api/token",
+            "/api/upload",
+            "/api/export",
         }
 
         if is_get_route and method_u != "GET":
@@ -475,9 +594,28 @@ class App:
                 if clean_path == "/api/backend-status":
                     rep = commands.backend_status(runner=self._runner)
                     return _json_response(200, rep.to_dict())
+                if clean_path == "/api/formats":
+                    return _json_response(
+                        200,
+                        {
+                            "upload_extensions": list(SUPPORTED_UPLOAD_EXTENSIONS),
+                            "export_formats": [
+                                {
+                                    "id": fmt_id,
+                                    "label": label,
+                                    "extension": ext,
+                                    "mime": mime,
+                                }
+                                for fmt_id, (label, ext, mime) in EXPORT_FORMATS.items()
+                            ],
+                        },
+                    )
 
             # Gate 5: POST JSON checks.
-            parsed_or_err = self._parse_json_post(hdrs, body)
+            max_post_bytes = (
+                MAX_UPLOAD_BODY_BYTES if clean_path == "/api/upload" else MAX_BODY_BYTES
+            )
+            parsed_or_err = self._parse_json_post(hdrs, body, max_bytes=max_post_bytes)
             if isinstance(parsed_or_err, HttpResponse):
                 return parsed_or_err
             payload = parsed_or_err
@@ -494,6 +632,10 @@ class App:
                 return self._run_serialized(lambda: self._handle_generate(payload))
             if clean_path == "/api/score":
                 return self._run_serialized(lambda: self._handle_score(payload))
+            if clean_path == "/api/upload":
+                return self._run_serialized(lambda: self._handle_upload(payload))
+            if clean_path == "/api/export":
+                return self._handle_export(payload)
 
             return _error_response(404, "Not found", "not-found")
         except CasperError as exc:
@@ -573,11 +715,13 @@ class CasperRequestHandler(BaseHTTPRequestHandler):
                 return
 
             # Pre-read body cap enforcement (TC-046): reject BEFORE reading rfile!
-            if content_length > MAX_BODY_BYTES:
+            clean_path = self.path.split("?", 1)[0]
+            max_body = MAX_UPLOAD_BODY_BYTES if clean_path == "/api/upload" else MAX_BODY_BYTES
+            if content_length > max_body:
                 self._write_http_response(
                     _error_response(
                         413,
-                        f"Request body exceeds {MAX_BODY_BYTES} bytes",
+                        f"Request body exceeds {max_body} bytes",
                         "payload-too-large",
                     )
                 )

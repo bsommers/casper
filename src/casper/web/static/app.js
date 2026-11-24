@@ -14,6 +14,23 @@
     "ask",
   ];
 
+  const DEFAULT_EXPORT_FORMATS = [
+    { id: "txt", label: "Plain Text (.txt)" },
+    { id: "md", label: "Markdown (.md)" },
+    { id: "adoc", label: "AsciiDoc (.adoc)" },
+    { id: "html", label: "HTML5 Document (.html)" },
+    { id: "pdf", label: "PDF Document (.pdf)" },
+    { id: "docx", label: "Microsoft Word (.docx)" },
+    { id: "odt", label: "OpenDocument Text (.odt)" },
+    { id: "rtf", label: "Rich Text Format (.rtf)" },
+    { id: "tex", label: "LaTeX (.tex)" },
+    { id: "rst", label: "reStructuredText (.rst)" },
+    { id: "org", label: "Emacs Org-mode (.org)" },
+    { id: "json", label: "JSON Bundle (.json)" },
+  ];
+
+  const THEME_STORAGE_KEY = "casper_theme";
+
   const state = {
     options: null,
     factOverrides: {},
@@ -42,6 +59,55 @@
     banner.classList.remove("hidden");
   }
 
+  function getStoredTheme() {
+    try {
+      const saved = window.localStorage.getItem(THEME_STORAGE_KEY);
+      if (saved === "light" || saved === "ghost") {
+        return saved;
+      }
+    } catch (_) {
+      // Ignore storage restrictions.
+    }
+    return "ghost";
+  }
+
+  function applyTheme(theme) {
+    const resolved = theme === "light" ? "light" : "ghost";
+    document.documentElement.setAttribute("data-theme", resolved);
+
+    const logo = document.getElementById("brand-logo");
+    if (logo) {
+      logo.setAttribute(
+        "src",
+        resolved === "ghost"
+          ? "/static/img/casper-logo-dark.svg"
+          : "/static/img/casper-logo-light.svg"
+      );
+    }
+
+    const btn = document.getElementById("btn-theme");
+    if (btn) {
+      btn.textContent = resolved === "ghost" ? "Theme: Ghostly" : "Theme: White";
+      btn.setAttribute("aria-pressed", resolved === "light" ? "true" : "false");
+    }
+
+    try {
+      window.localStorage.setItem(THEME_STORAGE_KEY, resolved);
+    } catch (_) {
+      // Ignore storage restrictions.
+    }
+  }
+
+  function setupThemeToggle() {
+    applyTheme(getStoredTheme());
+    const btn = document.getElementById("btn-theme");
+    if (!btn) return;
+    btn.addEventListener("click", function () {
+      const current = document.documentElement.getAttribute("data-theme");
+      applyTheme(current === "ghost" ? "light" : "ghost");
+    });
+  }
+
   async function apiGet(path) {
     const res = await fetch(path, { method: "GET" });
     const data = await res.json();
@@ -64,6 +130,38 @@
     return data;
   }
 
+  function arrayBufferToBase64(buffer) {
+    const bytes = new Uint8Array(buffer);
+    const chunkSize = 0x8000;
+    const parts = [];
+    for (let i = 0; i < bytes.length; i += chunkSize) {
+      parts.push(String.fromCharCode.apply(null, bytes.subarray(i, i + chunkSize)));
+    }
+    return btoa(parts.join(""));
+  }
+
+  function countWords(text) {
+    const trimmed = (text || "").trim();
+    return trimmed ? trimmed.split(/\s+/).length : 0;
+  }
+
+  function parseDownloadFilename(headerValue, fallbackName) {
+    if (!headerValue) return fallbackName;
+    const utf8Match = /filename\*=UTF-8''([^;\s]+)/i.exec(headerValue);
+    if (utf8Match && utf8Match[1]) {
+      try {
+        return decodeURIComponent(utf8Match[1].replace(/["']/g, ""));
+      } catch (_) {
+        return utf8Match[1];
+      }
+    }
+    const basicMatch = /filename="?([^";\n]+)"?/i.exec(headerValue);
+    if (basicMatch && basicMatch[1]) {
+      return basicMatch[1].trim();
+    }
+    return fallbackName;
+  }
+
   function fillSelect(selectEl, items, labelFn, emptyLabel) {
     selectEl.replaceChildren();
     if (emptyLabel !== undefined) {
@@ -73,7 +171,7 @@
     }
     for (const item of items) {
       const opt = el("option", "", labelFn(item));
-      opt.value = typeof item === "string" ? item : item.id;
+      opt.value = typeof item === "string" ? item : item.id || item.ext || item.format;
       selectEl.appendChild(opt);
     }
   }
@@ -172,7 +270,6 @@
       chips.appendChild(el("span", "chip", "Backend: " + data.backend.used));
     }
 
-    // Provenance view ("Where each sentence came from")
     const provList = document.getElementById("provenance-list");
     provList.replaceChildren();
     for (const entry of data.fact_trace || []) {
@@ -186,7 +283,6 @@
       provList.appendChild(row);
     }
 
-    // Checks view
     const checksList = document.getElementById("checks-list");
     checksList.replaceChildren();
     const findings = (val && val.findings) || [];
@@ -264,12 +360,88 @@
     });
   }
 
-  async function init() {
-    setupTabs();
+  async function handleFileUpload(file, targetTextareaId, statusId, topicInputId) {
+    if (!file) return;
+    showError("");
+    const statusEl = document.getElementById(statusId);
+    statusEl.className = "upload-status chip";
+    statusEl.textContent = "Loading " + file.name + "...";
+
     try {
-      const [opts, statusRep] = await Promise.all([
+      const buffer = await file.arrayBuffer();
+      const b64 = arrayBufferToBase64(buffer);
+      const data = await apiPost("/api/upload", {
+        filename: file.name,
+        content_base64: b64,
+      });
+
+      const text = data.text || "";
+      document.getElementById(targetTextareaId).value = text;
+
+      if (topicInputId && data.title) {
+        const topicEl = document.getElementById(topicInputId);
+        if (topicEl && !topicEl.value.trim()) {
+          topicEl.value = data.title;
+        }
+      }
+
+      const ext = file.name.includes(".") ? file.name.split(".").pop().toLowerCase() : "txt";
+      const fmt = data.format || ext;
+      const words = typeof data.word_count === "number" ? data.word_count : countWords(text);
+      statusEl.className = "upload-status chip ok";
+      statusEl.textContent = "Loaded " + (data.filename || file.name) + " (" + fmt + ", " + words + " words)";
+    } catch (err) {
+      statusEl.className = "upload-status chip err";
+      statusEl.textContent = "Upload failed";
+      showError(err.message);
+    }
+  }
+
+  function setupUploadZone(zoneId, inputId, targetTextareaId, statusId, topicInputId) {
+    const zone = document.getElementById(zoneId);
+    const input = document.getElementById(inputId);
+    if (!zone || !input) return;
+
+    input.addEventListener("change", function () {
+      const file = input.files && input.files[0];
+      if (file) {
+        handleFileUpload(file, targetTextareaId, statusId, topicInputId);
+        input.value = "";
+      }
+    });
+
+    zone.addEventListener("dragover", function (ev) {
+      ev.preventDefault();
+      zone.classList.add("dragover");
+    });
+
+    zone.addEventListener("dragleave", function () {
+      zone.classList.remove("dragover");
+    });
+
+    zone.addEventListener("drop", function (ev) {
+      ev.preventDefault();
+      zone.classList.remove("dragover");
+      const file = ev.dataTransfer && ev.dataTransfer.files && ev.dataTransfer.files[0];
+      if (file) {
+        handleFileUpload(file, targetTextareaId, statusId, topicInputId);
+      }
+    });
+  }
+
+  async function init() {
+    setupThemeToggle();
+    setupTabs();
+    setupUploadZone("w-upload-zone", "w-file-upload", "w-notes", "w-upload-status", "w-topic");
+    setupUploadZone("s-upload-zone", "s-file-upload", "s-text", "s-upload-status", null);
+
+    try {
+      const [opts, statusRep, formatsRep] = await Promise.all([
         apiGet("/api/options"),
         apiGet("/api/backend-status"),
+        apiGet("/api/formats").catch(function () {
+          return { export_formats: DEFAULT_EXPORT_FORMATS };
+        }),
       ]);
       state.options = opts;
 
@@ -281,6 +453,18 @@
       fillSelect(document.getElementById("w-backend"), opts.backends, (b) => b);
       fillSelect(document.getElementById("s-author"), opts.authors, (a) => a.display_name + " (" + a.id + ")");
       fillSelect(document.getElementById("s-overlay"), opts.modalities, (m) => m.id, "(none)");
+
+      const exportSelect = document.getElementById("export-format");
+      const exportFormats =
+        (formatsRep && Array.isArray(formatsRep.export_formats) && formatsRep.export_formats.length > 0)
+          ? formatsRep.export_formats
+          : DEFAULT_EXPORT_FORMATS;
+      fillSelect(exportSelect, exportFormats, function (f) {
+        return typeof f === "string" ? f : f.label || f.ext || f.id;
+      });
+      if (exportSelect.querySelector('option[value="txt"]')) {
+        exportSelect.value = "txt";
+      }
 
       document.getElementById("w-structure").addEventListener("change", syncModalityCompatibility);
       syncModalityCompatibility();
@@ -336,15 +520,53 @@
       }
     });
 
-    document.getElementById("btn-download").addEventListener("click", function () {
+    document.getElementById("btn-download").addEventListener("click", async function () {
       if (!state.lastResult) return;
-      const blob = new Blob([state.lastResult.text || ""], { type: "text/plain;charset=utf-8" });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "casper-draft.txt";
-      a.click();
-      URL.revokeObjectURL(url);
+      showError("");
+      const fmt = document.getElementById("export-format").value || "txt";
+      const ext = fmt.replace(/^\./, "") || "txt";
+      const topicVal = document.getElementById("w-topic").value.trim() || null;
+
+      try {
+        const res = await fetch("/api/export", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            format: fmt,
+            text: state.lastResult.text || "",
+            title: topicVal,
+            facts: state.lastResult.facts || [],
+            fact_trace: state.lastResult.fact_trace || [],
+            validation: state.lastResult.validation || {},
+            record: state.lastResult.record || {},
+          }),
+        });
+        if (!res.ok) {
+          let errMsg = "Export failed (" + res.status + ")";
+          try {
+            const errData = await res.json();
+            if (errData && errData.error) {
+              errMsg = errData.error;
+            }
+          } catch (_) {
+            // Keep HTTP status fallback.
+          }
+          throw new Error(errMsg);
+        }
+        const blob = await res.blob();
+        const filename = parseDownloadFilename(
+          res.headers.get("Content-Disposition"),
+          "casper-draft." + ext
+        );
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = filename;
+        a.click();
+        URL.revokeObjectURL(url);
+      } catch (err) {
+        showError(err.message);
+      }
     });
 
     document.getElementById("btn-score").addEventListener("click", async function () {

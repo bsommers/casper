@@ -17,6 +17,7 @@ from casper.loaders.docx import check_zip_bomb, parse_docx
 from casper.loaders.html import parse_html
 from casper.loaders.latex import parse_latex
 from casper.loaders.markdown import parse_markdown
+from casper.loaders.markup import parse_asciidoc, parse_org, parse_rst
 from casper.loaders.office import parse_doc, parse_odt
 from casper.loaders.pdf import parse_pdf
 from casper.loaders.rtf import parse_rtf
@@ -26,12 +27,36 @@ from casper.models import Document
 _OLE_MAGIC = b"\xd0\xcf\x11\xe0\xa1\xb1\x1a\xe1"
 _ZIP_MAGIC = b"PK\x03\x04"
 
+SUPPORTED_UPLOAD_EXTENSIONS: tuple[str, ...] = (
+    ".txt",
+    ".md",
+    ".markdown",
+    ".adoc",
+    ".asciidoc",
+    ".pdf",
+    ".docx",
+    ".odt",
+    ".rtf",
+    ".tex",
+    ".html",
+    ".htm",
+    ".csv",
+    ".yaml",
+    ".yml",
+    ".rst",
+    ".org",
+)
+
 _SUPPORTED_EXTENSIONS = frozenset(
     {
         ".html",
         ".htm",
         ".md",
         ".markdown",
+        ".adoc",
+        ".asciidoc",
+        ".rst",
+        ".org",
         ".txt",
         ".text",
         ".tex",
@@ -241,6 +266,12 @@ def load_bytes(
         return parse_csv(data, name)
     if ct in {"application/x-yaml", "text/yaml", "application/yaml"}:
         return parse_yaml(data, name)
+    if ct == "text/asciidoc":
+        return parse_asciidoc(data, name)
+    if ct in {"text/x-rst", "text/prs.fallenstein.rst"}:
+        return parse_rst(data, name)
+    if ct == "text/org":
+        return parse_org(data, name)
 
     # 3. Extension dispatch
     ext = Path(urllib.parse.urlparse(name).path if _looks_like_url(name) else name).suffix.lower()
@@ -262,6 +293,12 @@ def load_bytes(
         return parse_csv(data, name)
     if ext in {".yaml", ".yml"}:
         return parse_yaml(data, name)
+    if ext in {".adoc", ".asciidoc"}:
+        return parse_asciidoc(data, name)
+    if ext == ".rst":
+        return parse_rst(data, name)
+    if ext == ".org":
+        return parse_org(data, name)
     if ext in {".md", ".markdown"}:
         return parse_markdown(data, name, fmt="markdown")
     if ext in {".txt", ".text"}:
