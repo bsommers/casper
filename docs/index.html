@@ -44,7 +44,7 @@
         <div class="hero-actions">
           <a class="btn-primary" href="#quickstart">Get Started</a>
           <a class="btn-secondary" href="#brand-kit">Download Wallpapers &amp; Stickers</a>
-          <a class="btn-secondary" href="using.md">User Guide</a>
+          <a class="btn-secondary" href="doc.html?file=using.md">User Guide</a>
         </div>
         <div class="stat-strip" aria-label="Verified repository metrics">
           <div class="stat"><span class="stat-num">10</span><span class="stat-lbl">Personas</span></div>
@@ -179,33 +179,75 @@ scripts/verify.sh           # all 8 tiers + coverage</code></pre>
     <section id="docs" class="section">
       <div class="section-head">
         <h2>Documentation Hub</h2>
-        <p>Every guide is synced with the repository contracts and checked automatically on every verification run.</p>
+        <p>Every guide opens as a rendered webpage by default, with one-click Raw Markdown view and direct <code>.md</code> download.</p>
       </div>
       <div class="docs-grid">
-        <a class="hud-card doc-card" href="using.md">
-          <h3>Using Casper</h3>
-          <p>CLI workflows, 3-layer author profiles, optional `claude`/`agy` writers, and `start.sh`/`stop.sh` operations.</p>
-        </a>
-        <a class="hud-card doc-card" href="data-model.md">
-          <h3>Data Model &amp; Libraries</h3>
-          <p>Core dataclasses, 32 stability features, merge algebra, 10 personas, 3 structures, and 5 modalities.</p>
-        </a>
-        <a class="hud-card doc-card" href="api-reference.md">
-          <h3>API Reference</h3>
-          <p>10 uniform commands across Python `casper.*`, CLI `--json`, and hardened localhost HTTP endpoints.</p>
-        </a>
-        <a class="hud-card doc-card" href="testing.md">
-          <h3>Testing &amp; Verification</h3>
-          <p>8-tier test suite, offline socket guard, 9-mode fake CLI, golden regeneration, and coverage gates.</p>
-        </a>
-        <a class="hud-card doc-card" href="adr/README.md">
-          <h3>Architecture Decisions</h3>
-          <p>ADRs 0001–0012 documenting every architectural invariant and the exact test enforcing it.</p>
-        </a>
-        <a class="hud-card doc-card" href="https://github.com/bsommers/casper/blob/main/SPEC.md" target="_blank" rel="noopener">
-          <h3>Compiled Specification</h3>
-          <p>Full contract-first `SPEC.md` compiled deterministically from `spec/00-overview.md..05-brand-assets.md`.</p>
-        </a>
+        <article class="hud-card doc-card">
+          <a class="doc-card-link" href="doc.html?file=using.md">
+            <h3>Using Casper</h3>
+            <p>CLI workflows, 3-layer author profiles, optional <code>claude</code>/<code>agy</code> writers, and <code>start.sh</code>/<code>stop.sh</code> operations.</p>
+          </a>
+          <div class="doc-actions">
+            <a class="dl-link primary-link" href="doc.html?file=using.md">Read (Rendered)</a>
+            <a class="dl-link" href="using.md" target="_blank" rel="noopener">View Raw</a>
+            <a class="dl-link" href="using.md" download="using.md">Download .md</a>
+          </div>
+        </article>
+        <article class="hud-card doc-card">
+          <a class="doc-card-link" href="doc.html?file=data-model.md">
+            <h3>Data Model &amp; Libraries</h3>
+            <p>Core dataclasses, 32 stability features, merge algebra, 10 personas, 3 structures, and 5 modalities.</p>
+          </a>
+          <div class="doc-actions">
+            <a class="dl-link primary-link" href="doc.html?file=data-model.md">Read (Rendered)</a>
+            <a class="dl-link" href="data-model.md" target="_blank" rel="noopener">View Raw</a>
+            <a class="dl-link" href="data-model.md" download="data-model.md">Download .md</a>
+          </div>
+        </article>
+        <article class="hud-card doc-card">
+          <a class="doc-card-link" href="doc.html?file=api-reference.md">
+            <h3>API Reference</h3>
+            <p>10 uniform commands across Python <code>casper.*</code>, CLI <code>--json</code>, and hardened localhost HTTP endpoints.</p>
+          </a>
+          <div class="doc-actions">
+            <a class="dl-link primary-link" href="doc.html?file=api-reference.md">Read (Rendered)</a>
+            <a class="dl-link" href="api-reference.md" target="_blank" rel="noopener">View Raw</a>
+            <a class="dl-link" href="api-reference.md" download="api-reference.md">Download .md</a>
+          </div>
+        </article>
+        <article class="hud-card doc-card">
+          <a class="doc-card-link" href="doc.html?file=testing.md">
+            <h3>Testing &amp; Verification</h3>
+            <p>8-tier test suite, offline socket guard, 9-mode fake CLI, golden regeneration, and coverage gates.</p>
+          </a>
+          <div class="doc-actions">
+            <a class="dl-link primary-link" href="doc.html?file=testing.md">Read (Rendered)</a>
+            <a class="dl-link" href="testing.md" target="_blank" rel="noopener">View Raw</a>
+            <a class="dl-link" href="testing.md" download="testing.md">Download .md</a>
+          </div>
+        </article>
+        <article class="hud-card doc-card">
+          <a class="doc-card-link" href="doc.html?file=adr/README.md">
+            <h3>Architecture Decisions</h3>
+            <p>ADRs 0001–0012 documenting every architectural invariant and the exact test enforcing it.</p>
+          </a>
+          <div class="doc-actions">
+            <a class="dl-link primary-link" href="doc.html?file=adr/README.md">Read (Rendered)</a>
+            <a class="dl-link" href="adr/README.md" target="_blank" rel="noopener">View Raw</a>
+            <a class="dl-link" href="adr/README.md" download="adr-README.md">Download .md</a>
+          </div>
+        </article>
+        <article class="hud-card doc-card">
+          <a class="doc-card-link" href="https://github.com/bsommers/casper/blob/main/SPEC.md" target="_blank" rel="noopener">
+            <h3>Compiled Specification</h3>
+            <p>Full contract-first <code>SPEC.md</code> compiled deterministically from <code>spec/00-overview.md..05-brand-assets.md</code>.</p>
+          </a>
+          <div class="doc-actions">
+            <a class="dl-link primary-link" href="https://github.com/bsommers/casper/blob/main/SPEC.md" target="_blank" rel="noopener">Read (Rendered)</a>
+            <a class="dl-link" href="https://raw.githubusercontent.com/bsommers/casper/main/SPEC.md" target="_blank" rel="noopener">View Raw</a>
+            <a class="dl-link" href="https://raw.githubusercontent.com/bsommers/casper/main/SPEC.md" download="SPEC.md">Download .md</a>
+          </div>
+        </article>
       </div>
     </section>
   </main>

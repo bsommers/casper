@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Casper Documentation</title>
+  <link rel="icon" type="image/svg+xml" href="brand/favicon.svg">
+  <link rel="icon" href="brand/favicon.ico" sizes="any">
+  <link rel="apple-touch-icon" href="brand/apple-touch-icon.png">
+  <link rel="stylesheet" href="site.css">
+</head>
+<body>
+  <div class="grid-bg" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <a class="brand-link" href="index.html">
+      <img src="brand/casper-logo-dark.svg" alt="Casper — The Friendly Ghostwriter" class="brand-logo">
+    </a>
+    <nav class="nav-links" aria-label="Documentation navigation">
+      <a href="index.html#docs">All Docs</a>
+      <a href="doc.html?file=using.md">Using</a>
+      <a href="doc.html?file=data-model.md">Data Model</a>
+      <a href="doc.html?file=api-reference.md">API</a>
+      <a href="doc.html?file=testing.md">Testing</a>
+      <a href="doc.html?file=adr/README.md">ADRs</a>
+      <a class="btn-outline" href="https://github.com/bsommers/casper" target="_blank" rel="noopener">GitHub</a>
+    </nav>
+  </header>
+
+  <main class="container doc-container">
+    <div class="hud-card doc-toolbar">
+      <div class="doc-toolbar-left">
+        <a class="dl-link" href="index.html#docs">&larr; Back to Hub</a>
+        <span id="doc-path-badge" class="tag">loading...</span>
+      </div>
+      <div class="doc-toolbar-right">
+        <div class="pill-group" role="group" aria-label="Document view mode">
+          <button type="button" id="btn-view-rendered" class="pill active">Rendered</button>
+          <button type="button" id="btn-view-raw" class="pill">Raw Markdown</button>
+        </div>
+        <a id="btn-open-raw" class="dl-link" href="using.md" target="_blank" rel="noopener">Open Raw .md</a>
+        <a id="btn-download-md" class="dl-link" href="using.md" download>Download .md</a>
+      </div>
+    </div>
+
+    <article id="doc-rendered" class="hud-card markdown-body">
+      <p>Loading documentation...</p>
+    </article>
+
+    <section id="doc-raw" class="hud-card doc-raw-box hidden">
+      <div class="recipe-head">
+        <h3>Raw Markdown Source</h3>
+        <button type="button" id="btn-copy-raw" class="copy-btn">Copy Markdown</button>
+      </div>
+      <pre><code id="doc-raw-code"></code></pre>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <img src="brand/casper-mark.svg" alt="Casper Ghost Mark" class="footer-mark">
+      <span>Casper Documentation Viewer · Local-First · MIT License</span>
+    </div>
+  </footer>
+
+  <script src="doc-viewer.js"></script>
+</body>
+</html>
