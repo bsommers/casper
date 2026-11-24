@@ -8,6 +8,82 @@
   <link rel="icon" href="brand/favicon.ico" sizes="any">
   <link rel="apple-touch-icon" href="brand/apple-touch-icon.png">
   <link rel="stylesheet" href="site.css">
+  <style>
+    .doc-toc {
+      padding: 1rem 1.25rem;
+      margin-bottom: 1.15rem;
+    }
+    .doc-toc-title {
+      margin: 0 0 0.6rem;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--neon);
+    }
+    .doc-toc-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+    .doc-toc-list a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.86rem;
+      transition: color 0.15s ease;
+    }
+    .doc-toc-list a:hover {
+      color: var(--neon);
+    }
+    .doc-toc-lvl-2 { padding-left: 0.75rem; }
+    .doc-toc-lvl-3 { padding-left: 1.5rem; }
+    .doc-toc-lvl-4, .doc-toc-lvl-5, .doc-toc-lvl-6 { padding-left: 2.25rem; }
+    .md-code-block {
+      margin: 1rem 0;
+    }
+    .md-code-block .md-code-head {
+      margin-bottom: 0.35rem;
+    }
+    .md-code-block pre {
+      margin: 0;
+    }
+    .task-list {
+      list-style: none;
+      padding-left: 0.4rem;
+    }
+    .task-list-item input[type="checkbox"] {
+      accent-color: var(--neon);
+      margin-right: 0.35rem;
+      vertical-align: middle;
+    }
+    .md-alert {
+      border-left-width: 4px;
+    }
+    .md-alert-title {
+      margin: 0 0 0.35rem;
+      font-size: 0.82rem;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+    .md-alert-note { border-left-color: #38bdf8; background: rgba(56, 189, 248, 0.08); }
+    .md-alert-note .md-alert-title { color: #38bdf8; }
+    .md-alert-tip { border-left-color: #34d399; background: rgba(52, 211, 153, 0.08); }
+    .md-alert-tip .md-alert-title { color: #34d399; }
+    .md-alert-important { border-left-color: #a78bfa; background: rgba(167, 139, 250, 0.08); }
+    .md-alert-important .md-alert-title { color: #a78bfa; }
+    .md-alert-warning { border-left-color: #fbbf24; background: rgba(251, 191, 36, 0.08); }
+    .md-alert-warning .md-alert-title { color: #fbbf24; }
+    .md-alert-caution { border-left-color: #f87171; background: rgba(248, 113, 113, 0.08); }
+    .md-alert-caution .md-alert-title { color: #f87171; }
+    .markdown-body img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+    }
+  </style>
 </head>
 <body>
   <div class="grid-bg" aria-hidden="true"></div>
@@ -38,10 +114,13 @@
           <button type="button" id="btn-view-rendered" class="pill active">Rendered</button>
           <button type="button" id="btn-view-raw" class="pill">Raw Markdown</button>
         </div>
+        <a id="btn-static-html" class="dl-link primary-link" href="rendered/using.html">Static HTML</a>
         <a id="btn-open-raw" class="dl-link" href="using.md" target="_blank" rel="noopener">Open Raw .md</a>
         <a id="btn-download-md" class="dl-link" href="using.md" download>Download .md</a>
       </div>
     </div>
+
+    <nav id="doc-toc" class="hud-card doc-toc hidden" aria-label="Table of contents"></nav>
 
     <article id="doc-rendered" class="hud-card markdown-body">
       <p>Loading documentation...</p>
@@ -63,6 +142,7 @@
     </div>
   </footer>
 
+  <script src="md-render.js"></script>
   <script src="doc-viewer.js"></script>
 </body>
 </html>

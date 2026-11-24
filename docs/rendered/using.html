@@ -1,0 +1,156 @@
+<!-- DO NOT EDIT DIRECTLY. Generated deterministically by scripts/build_docs_html.py -->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Using Casper — Casper Documentation</title>
+  <link rel="icon" type="image/svg+xml" href="../brand/favicon.svg">
+  <link rel="icon" href="../brand/favicon.ico" sizes="any">
+  <link rel="apple-touch-icon" href="../brand/apple-touch-icon.png">
+  <link rel="stylesheet" href="../site.css">
+</head>
+<body>
+  <div class="grid-bg" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <a class="brand-link" href="../index.html">
+      <img src="../brand/casper-logo-dark.svg" alt="Casper — The Friendly Ghostwriter" class="brand-logo">
+    </a>
+    <nav class="nav-links" aria-label="Documentation navigation">
+      <a href="../index.html#docs">All Docs</a>
+      <a href="using.html">Using</a>
+      <a href="data-model.html">Data Model</a>
+      <a href="api-reference.html">API</a>
+      <a href="testing.html">Testing</a>
+      <a href="adr/README.html">ADRs</a>
+      <a class="btn-outline" href="https://github.com/bsommers/casper" target="_blank" rel="noopener">GitHub</a>
+    </nav>
+  </header>
+
+  <main class="container doc-container">
+    <div class="hud-card doc-toolbar">
+      <div class="doc-toolbar-left">
+        <a class="dl-link" href="../index.html#docs">&larr; Back to Hub</a>
+        <span class="tag">using.md</span>
+      </div>
+      <div class="doc-toolbar-right">
+        <div class="pill-group" role="group" aria-label="Document view mode">
+          <span class="pill active" aria-current="page">Pre-Rendered HTML</span>
+          <a class="pill" href="../doc.html?file=using.md">Dynamic JS Viewer</a>
+        </div>
+        <a class="dl-link" href="../using.md" target="_blank" rel="noopener">View Raw .md</a>
+        <a class="dl-link" href="../using.md" download="using.md">Download .md</a>
+      </div>
+    </div>
+
+    <article class="hud-card markdown-body">
+      <nav class="doc-toc" aria-label="Table of contents">
+  <div class="doc-toc-title">On This Page</div>
+  <ul class="doc-toc-list">
+    <li class="toc-l2"><a href="#generating-drafts-casper-write">Generating Drafts (casper write)</a></li>
+    <li class="toc-l3"><a href="#common-flags-workflows">Common Flags &amp; Workflows</a></li>
+    <li class="toc-l2"><a href="#author-voice-profiles-casper-author">Author Voice Profiles (casper author)</a></li>
+    <li class="toc-l3"><a href="#three-layer-author-profiles">Three-Layer Author Profiles</a></li>
+    <li class="toc-l2"><a href="#localhost-web-ui-casper-serve-operational-scripts">Localhost Web UI (casper serve &amp; Operational Scripts)</a></li>
+    <li class="toc-l2"><a href="#reproducing-worked-examples">Reproducing Worked Examples</a></li>
+  </ul>
+</nav>
+
+<h1 id="using-casper">Using Casper</h1>
+<p>Practical guide for running Casper from the CLI, managing the localhost Web UI, maintaining three-layer author voice profiles, and reproducing the worked examples.</p>
+<h2 id="generating-drafts-casper-write">Generating Drafts (<code>casper write</code>)</h2>
+<p><code>casper write</code> extracts facts from inputs/notes, selects and adapts a plan for the target persona and modality, realizes candidates, and validates fact traceability.</p>
+<div class="code-block"><div class="code-block-head"><span class="code-lang">bash</span></div><pre><code class="language-bash">casper write \
+  --structure status_update \
+  --modality email \
+  --source developer \
+  --target management \
+  --author bill \
+  --input examples/edge-migration-status.md \
+  --out output/status-email.md</code></pre></div>
+<h3 id="common-flags-workflows">Common Flags &amp; Workflows</h3>
+<ul>
+<li><p><strong>Inspect available options and backends:</strong></p>
+<div class="code-block"><div class="code-block-head"><span class="code-lang">bash</span></div><pre><code class="language-bash">casper write --list-options
+casper write --backend-status</code></pre></div></li>
+<li><p><strong>Dry-run fact extraction (<code>--dry-run</code>):</strong> Extract and classify facts with IDs and salience without realizing a draft:</p>
+<div class="code-block"><div class="code-block-head"><span class="code-lang">bash</span></div><pre><code class="language-bash">casper write --dry-run --input examples/edge-migration-status.md --json</code></pre></div></li>
+<li><p><strong>Override fact classification (<code>--fact-override</code>):</strong> Reassign one or more extracted fact IDs using <code>FID=KIND</code>:</p>
+<div class="code-block"><div class="code-block-head"><span class="code-lang">bash</span></div><pre><code class="language-bash">casper write --dry-run --input notes.md --fact-override f001=risk --fact-override f004=ask</code></pre></div></li>
+<li><p><strong>Load settings from a brief file (<code>--brief</code>):</strong> Provide any <code>Brief</code> fields in YAML; explicit CLI flags override values from <code>--brief</code>:</p>
+<div class="code-block"><div class="code-block-head"><span class="code-lang">bash</span></div><pre><code class="language-bash">casper write --brief brief.yaml --modality slack</code></pre></div></li>
+<li><strong>Save draft and full provenance trace (<code>--out</code>):</strong> Writes the rendered draft to <code>&lt;path&gt;</code> and a complete JSON record (<code>text</code>, <code>validation</code>, <code>fact_trace</code>, <code>record</code>, <code>facts</code>, <code>backend</code>) to <code>&lt;path&gt;.trace.json</code>.</li>
+<li><p><strong>Optional CLI writer backends (<code>--backend claude|agy</code>):</strong> Deterministic <code>rules</code> is the default. To opt into an external CLI writer:</p>
+<div class="code-block"><div class="code-block-head"><span class="code-lang">bash</span></div><pre><code class="language-bash">casper write \
+  --structure decision_memo \
+  --modality memo \
+  --source tech_lead \
+  --target executive \
+  --input examples/edge-migration-status.md \
+  --backend claude \
+  --model claude-sonnet-4-5 \
+  --timeout 90</code></pre></div>
+<p>Pass <code>--no-fallback</code> to fail rather than fall back to <code>rules</code> if the external CLI backend errors or fails validation.</p></li>
+</ul>
+<h2 id="author-voice-profiles-casper-author">Author Voice Profiles (<code>casper author</code>)</h2>
+<p>Author profiles live in <code>authors/</code> (default <code>--authors-dir authors</code>).</p>
+<div class="code-block"><div class="code-block-head"><span class="code-lang">bash</span></div><pre><code class="language-bash"># Build a profile from sample writings (files, directories, or URLs)
+casper author build --id alex --name "Alex Rivera" --alias "A. Rivera" samples/
+
+# Build with private email (stored ONLY in gitignored authors/alex.local.yaml with mode 0600)
+casper author build --id alex --name "Alex Rivera" --email "alex@example.com" samples/
+
+# List, inspect metadata &amp; drift, or display raw/resolved YAML
+casper author list
+casper author inspect alex
+casper author show alex --resolved --overlay slack
+
+# Score an existing draft against an author's voice profile
+casper author score alex draft.md
+casper author score alex draft.md --raw
+casper author score alex draft.md --overlay memo
+
+# Compare two authors across all 32 stability features
+casper author diff alex jordan</code></pre></div>
+<p>Add <code>--json</code> to <code>inspect</code>, <code>show</code>, <code>score</code>, <code>list</code>, or <code>diff</code> for machine-readable output.</p>
+<h3 id="three-layer-author-profiles">Three-Layer Author Profiles</h3>
+<p>Casper keeps generated statistics, curated editorial overrides, and private personal details cleanly separated:</p>
+<ol>
+<li><strong><code>authors/&lt;id&gt;.yaml</code> (generated layer):</strong> Created by <code>casper author build</code> with a <code>generated.body_sha256</code> integrity digest. Hand-editing triggers <code>ProfileTamperedError</code> (exit code <code>3</code>) on rebuild unless <code>--force</code> is passed (which writes a <code>.bak</code> backup).</li>
+<li><strong><code>authors/&lt;id&gt;.curated.yaml</code> (curated layer):</strong> Optional, version-controlled overrides for style guide rules, vocabulary preferences, or pinned feature targets. List mutations must use <code>$add</code>, <code>$remove</code>, or <code>$replace</code> directives rather than plain list replacement.</li>
+<li><strong><code>authors/&lt;id&gt;.local.yaml</code> (local private layer):</strong> Gitignored companion file written with POSIX permissions <code>0600</code> for private metadata (such as <code>--email</code> or <code>consent</code>) and local-only overrides. Never sent to external CLI prompts (<code>claude</code>/<code>agy</code>).</li>
+</ol>
+<p>Both <code>.curated.yaml</code> and <code>.local.yaml</code> may also define <code>overlays.&lt;modality&gt;</code> mappings (applied via <code>--overlay &lt;name&gt;</code>).</p>
+<h2 id="localhost-web-ui-casper-serve-operational-scripts">Localhost Web UI (<code>casper serve</code> &amp; Operational Scripts)</h2>
+<p>Start the Web UI directly via the CLI (bound strictly to <code>127.0.0.1</code>):</p>
+<div class="code-block"><div class="code-block-head"><span class="code-lang">bash</span></div><pre><code class="language-bash">casper serve --host 127.0.0.1 --port 8731 --authors-dir authors</code></pre></div>
+<p>Or use the repository helper scripts:</p>
+<ul>
+<li><strong><code>scripts/start.sh [--background] [--open] [--port N] [--no-install]</code></strong> — Ensures <code>.venv</code> and editable <code>casper</code> install exist (unless <code>--no-install</code>), verifies <code>127.0.0.1:&lt;port&gt;</code> is free, checks for stale PID files (<code>target/casper.pid</code>), and starts the server (logging to <code>target/casper-server.log</code> when <code>--background</code> is set).</li>
+<li><strong><code>scripts/stop.sh</code></strong> — Verifies the PID in <code>target/casper.pid</code> belongs to <code>casper serve</code>, sends <code>SIGTERM</code>, waits for clean shutdown, and removes the PID file.</li>
+</ul>
+<h2 id="reproducing-worked-examples">Reproducing Worked Examples</h2>
+<p><code>examples/edge-migration-status.md</code> is the canonical input for five checked-in outputs in <code>examples/outputs/</code>:</p>
+<ul>
+<li><code>status-slack.txt</code> (<code>status_update</code> × <code>slack</code>)</li>
+<li><code>status-email.md</code> (<code>status_update</code> × <code>email</code>)</li>
+<li><code>decision-memo.md</code> (<code>decision_memo</code> × <code>memo</code>)</li>
+<li><code>technical-article.html</code> (<code>technical_article</code> × <code>article</code>)</li>
+<li><code>status-plain.txt</code> (<code>status_update</code> × <code>plain</code>)</li>
+</ul>
+<p>Verify zero drift against the current deterministic pipeline or regenerate them:</p>
+<div class="code-block"><div class="code-block-head"><span class="code-lang">bash</span></div><pre><code class="language-bash">.venv/bin/python scripts/build_examples.py --check
+.venv/bin/python scripts/build_examples.py</code></pre></div>
+<p>See also: <a href="data-model.html">Data Model &amp; Libraries</a> · <a href="api-reference.html">API Reference</a> · <a href="testing.html">Testing &amp; Verification</a></p>
+    </article>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <img src="../brand/casper-mark.svg" alt="Casper Ghost Mark" class="footer-mark">
+      <span>Casper Documentation · Pre-Rendered Static HTML · Local-First · MIT License</span>
+    </div>
+  </footer>
+</body>
+</html>

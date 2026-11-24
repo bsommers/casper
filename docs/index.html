@@ -44,7 +44,7 @@
         <div class="hero-actions">
           <a class="btn-primary" href="#quickstart">Get Started</a>
           <a class="btn-secondary" href="#brand-kit">Download Wallpapers &amp; Stickers</a>
-          <a class="btn-secondary" href="doc.html?file=using.md">User Guide</a>
+          <a class="btn-secondary" href="rendered/using.html">User Guide</a>
         </div>
         <div class="stat-strip" aria-label="Verified repository metrics">
           <div class="stat"><span class="stat-num">10</span><span class="stat-lbl">Personas</span></div>
@@ -70,32 +70,32 @@
         <article class="hud-card stage-card">
           <img src="brand/icons/icon-facts.svg" alt="Fact Extraction icon" class="stage-icon">
           <h3>1. Fact Ingestion</h3>
-          <p>Loads Markdown, HTML, LaTeX, DOCX, PDF, RTF, CSV, and YAML into deduplicated, salience-ranked facts (`f001..`) and a NetworkX DiGraph.</p>
+          <p>Loads Markdown, HTML, LaTeX, DOCX, PDF, RTF, CSV, and YAML into deduplicated, salience-ranked facts (<code>f001..</code>) and a NetworkX DiGraph.</p>
         </article>
         <article class="hud-card stage-card">
           <img src="brand/icons/icon-plan.svg" alt="Structure Planner icon" class="stage-icon">
           <h3>2. Plan &amp; Adapt</h3>
-          <p>Maps facts into structure sections with depth caps (`1/3/6`), persona priority ordering, glossary substitution, and explicit ASK-only CTAs.</p>
+          <p>Maps facts into structure sections with depth caps (<code>1/3/6</code>), persona priority ordering, glossary substitution, and explicit ASK-only CTAs.</p>
         </article>
         <article class="hud-card stage-card">
           <img src="brand/icons/icon-voice.svg" alt="Voice Profile icon" class="stage-icon">
           <h3>3. Author Voice</h3>
-          <p>3-layer YAML profiles (`generated`, `curated`, mode-0600 `local`) scored across 32 features + 60 function words with tamper protection.</p>
+          <p>3-layer YAML profiles (<code>generated</code>, <code>curated</code>, mode-0600 <code>local</code>) scored across 32 features + 60 function words with tamper protection.</p>
         </article>
         <article class="hud-card stage-card">
           <img src="brand/icons/icon-cli-writer.svg" alt="Realizer and CLI Writers icon" class="stage-icon">
           <h3>4. Realize</h3>
-          <p>Deterministic `RuleBasedRealizer` by default (byte-identical) plus isolated opt-in `claude` &amp; `agy` CLI writers with automatic fallback.</p>
+          <p>Deterministic <code>RuleBasedRealizer</code> by default (byte-identical) plus isolated opt-in <code>claude</code> &amp; <code>agy</code> CLI writers with automatic fallback.</p>
         </article>
         <article class="hud-card stage-card">
           <img src="brand/icons/icon-validate.svg" alt="Fidelity Validator icon" class="stage-icon">
           <h3>5. Validate</h3>
-          <p>22 checks enforcing zero-invention traceability in `STRICT` mode and signed numbers, names, and per-fact polarity in `ASSISTED` mode.</p>
+          <p>22 checks enforcing zero-invention traceability in <code>STRICT</code> mode and signed numbers, names, and per-fact polarity in <code>ASSISTED</code> mode.</p>
         </article>
         <article class="hud-card stage-card">
           <img src="brand/icons/icon-format.svg" alt="Modality Formatter icon" class="stage-icon">
           <h3>6. Lossless Format</h3>
-          <p>Renders `slack`, `email`, `memo`, `article` (escaped HTML5), and `plain` without ever altering grounded wording, plus `.trace.json` provenance.</p>
+          <p>Renders <code>slack</code>, <code>email</code>, <code>memo</code>, <code>article</code> (escaped HTML5), and <code>plain</code> without ever altering grounded wording, plus <code>.trace.json</code> provenance.</p>
         </article>
       </div>
     </section>
@@ -179,60 +179,65 @@ scripts/verify.sh           # all 8 tiers + coverage</code></pre>
     <section id="docs" class="section">
       <div class="section-head">
         <h2>Documentation Hub</h2>
-        <p>Every guide opens as a rendered webpage by default, with one-click Raw Markdown view and direct <code>.md</code> download.</p>
+        <p>Every guide opens as a pre-rendered HTML page by default (zero JS required), with one-click Dynamic JS viewer, Raw Markdown view, and direct <code>.md</code> download.</p>
       </div>
       <div class="docs-grid">
         <article class="hud-card doc-card">
-          <a class="doc-card-link" href="doc.html?file=using.md">
+          <a class="doc-card-link" href="rendered/using.html">
             <h3>Using Casper</h3>
             <p>CLI workflows, 3-layer author profiles, optional <code>claude</code>/<code>agy</code> writers, and <code>start.sh</code>/<code>stop.sh</code> operations.</p>
           </a>
           <div class="doc-actions">
-            <a class="dl-link primary-link" href="doc.html?file=using.md">Read (Rendered)</a>
+            <a class="dl-link primary-link" href="rendered/using.html">Read (Rendered)</a>
+            <a class="dl-link" href="doc.html?file=using.md">Dynamic JS</a>
             <a class="dl-link" href="using.md" target="_blank" rel="noopener">View Raw</a>
             <a class="dl-link" href="using.md" download="using.md">Download .md</a>
           </div>
         </article>
         <article class="hud-card doc-card">
-          <a class="doc-card-link" href="doc.html?file=data-model.md">
+          <a class="doc-card-link" href="rendered/data-model.html">
             <h3>Data Model &amp; Libraries</h3>
             <p>Core dataclasses, 32 stability features, merge algebra, 10 personas, 3 structures, and 5 modalities.</p>
           </a>
           <div class="doc-actions">
-            <a class="dl-link primary-link" href="doc.html?file=data-model.md">Read (Rendered)</a>
+            <a class="dl-link primary-link" href="rendered/data-model.html">Read (Rendered)</a>
+            <a class="dl-link" href="doc.html?file=data-model.md">Dynamic JS</a>
             <a class="dl-link" href="data-model.md" target="_blank" rel="noopener">View Raw</a>
             <a class="dl-link" href="data-model.md" download="data-model.md">Download .md</a>
           </div>
         </article>
         <article class="hud-card doc-card">
-          <a class="doc-card-link" href="doc.html?file=api-reference.md">
+          <a class="doc-card-link" href="rendered/api-reference.html">
             <h3>API Reference</h3>
             <p>10 uniform commands across Python <code>casper.*</code>, CLI <code>--json</code>, and hardened localhost HTTP endpoints.</p>
           </a>
           <div class="doc-actions">
-            <a class="dl-link primary-link" href="doc.html?file=api-reference.md">Read (Rendered)</a>
+            <a class="dl-link primary-link" href="rendered/api-reference.html">Read (Rendered)</a>
+            <a class="dl-link" href="doc.html?file=api-reference.md">Dynamic JS</a>
             <a class="dl-link" href="api-reference.md" target="_blank" rel="noopener">View Raw</a>
             <a class="dl-link" href="api-reference.md" download="api-reference.md">Download .md</a>
           </div>
         </article>
         <article class="hud-card doc-card">
-          <a class="doc-card-link" href="doc.html?file=testing.md">
+          <a class="doc-card-link" href="rendered/testing.html">
             <h3>Testing &amp; Verification</h3>
             <p>8-tier test suite, offline socket guard, 9-mode fake CLI, golden regeneration, and coverage gates.</p>
           </a>
           <div class="doc-actions">
-            <a class="dl-link primary-link" href="doc.html?file=testing.md">Read (Rendered)</a>
+            <a class="dl-link primary-link" href="rendered/testing.html">Read (Rendered)</a>
+            <a class="dl-link" href="doc.html?file=testing.md">Dynamic JS</a>
             <a class="dl-link" href="testing.md" target="_blank" rel="noopener">View Raw</a>
             <a class="dl-link" href="testing.md" download="testing.md">Download .md</a>
           </div>
         </article>
         <article class="hud-card doc-card">
-          <a class="doc-card-link" href="doc.html?file=adr/README.md">
+          <a class="doc-card-link" href="rendered/adr/README.html">
             <h3>Architecture Decisions</h3>
             <p>ADRs 0001–0012 documenting every architectural invariant and the exact test enforcing it.</p>
           </a>
           <div class="doc-actions">
-            <a class="dl-link primary-link" href="doc.html?file=adr/README.md">Read (Rendered)</a>
+            <a class="dl-link primary-link" href="rendered/adr/README.html">Read (Rendered)</a>
+            <a class="dl-link" href="doc.html?file=adr/README.md">Dynamic JS</a>
             <a class="dl-link" href="adr/README.md" target="_blank" rel="noopener">View Raw</a>
             <a class="dl-link" href="adr/README.md" download="adr-README.md">Download .md</a>
           </div>

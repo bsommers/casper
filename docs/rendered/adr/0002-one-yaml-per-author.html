@@ -1,0 +1,77 @@
+<!-- DO NOT EDIT DIRECTLY. Generated deterministically by scripts/build_docs_html.py -->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ADR 0002 — Author Profiles Stored as One YAML File per Author in authors/ — Casper Documentation</title>
+  <link rel="icon" type="image/svg+xml" href="../../brand/favicon.svg">
+  <link rel="icon" href="../../brand/favicon.ico" sizes="any">
+  <link rel="apple-touch-icon" href="../../brand/apple-touch-icon.png">
+  <link rel="stylesheet" href="../../site.css">
+</head>
+<body>
+  <div class="grid-bg" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <a class="brand-link" href="../../index.html">
+      <img src="../../brand/casper-logo-dark.svg" alt="Casper — The Friendly Ghostwriter" class="brand-logo">
+    </a>
+    <nav class="nav-links" aria-label="Documentation navigation">
+      <a href="../../index.html#docs">All Docs</a>
+      <a href="../using.html">Using</a>
+      <a href="../data-model.html">Data Model</a>
+      <a href="../api-reference.html">API</a>
+      <a href="../testing.html">Testing</a>
+      <a href="../adr/README.html">ADRs</a>
+      <a class="btn-outline" href="https://github.com/bsommers/casper" target="_blank" rel="noopener">GitHub</a>
+    </nav>
+  </header>
+
+  <main class="container doc-container">
+    <div class="hud-card doc-toolbar">
+      <div class="doc-toolbar-left">
+        <a class="dl-link" href="../../index.html#docs">&larr; Back to Hub</a>
+        <span class="tag">adr/0002-one-yaml-per-author.md</span>
+      </div>
+      <div class="doc-toolbar-right">
+        <div class="pill-group" role="group" aria-label="Document view mode">
+          <span class="pill active" aria-current="page">Pre-Rendered HTML</span>
+          <a class="pill" href="../../doc.html?file=adr/0002-one-yaml-per-author.md">Dynamic JS Viewer</a>
+        </div>
+        <a class="dl-link" href="../../adr/0002-one-yaml-per-author.md" target="_blank" rel="noopener">View Raw .md</a>
+        <a class="dl-link" href="../../adr/0002-one-yaml-per-author.md" download="adr-0002-one-yaml-per-author.md">Download .md</a>
+      </div>
+    </div>
+
+    <article class="hud-card markdown-body">
+      <nav class="doc-toc" aria-label="Table of contents">
+  <div class="doc-toc-title">On This Page</div>
+  <ul class="doc-toc-list">
+    <li class="toc-l2"><a href="#context">Context</a></li>
+    <li class="toc-l2"><a href="#decision">Decision</a></li>
+    <li class="toc-l2"><a href="#consequences">Consequences</a></li>
+  </ul>
+</nav>
+
+<h1 id="adr-0002-author-profiles-stored-as-one-yaml-file-per-author-in-authors">ADR 0002 — Author Profiles Stored as One YAML File per Author in authors/</h1>
+<p><strong>Status:</strong> accepted<br>
+<strong>Date:</strong> 2026-11-20<br>
+<strong>Enforced by:</strong> <code>tests/unit/test_profile.py</code></p>
+<h2 id="context">Context</h2>
+<p>Author voice fingerprints should be human-inspectable, diffable in git, and modular per author.</p>
+<h2 id="decision">Decision</h2>
+<p>Store each generated author profile as <code>authors/&lt;id&gt;.yaml</code> with schema version 1 and canonical <code>body_sha256</code>.</p>
+<h2 id="consequences">Consequences</h2>
+<p>Simple file-based catalog management and clean diffs per author.</p>
+    </article>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <img src="../../brand/casper-mark.svg" alt="Casper Ghost Mark" class="footer-mark">
+      <span>Casper Documentation · Pre-Rendered Static HTML · Local-First · MIT License</span>
+    </div>
+  </footer>
+</body>
+</html>

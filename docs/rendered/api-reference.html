@@ -1,0 +1,124 @@
+<!-- DO NOT EDIT DIRECTLY. Generated deterministically by scripts/build_docs_html.py -->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>API Reference — Casper Documentation</title>
+  <link rel="icon" type="image/svg+xml" href="../brand/favicon.svg">
+  <link rel="icon" href="../brand/favicon.ico" sizes="any">
+  <link rel="apple-touch-icon" href="../brand/apple-touch-icon.png">
+  <link rel="stylesheet" href="../site.css">
+</head>
+<body>
+  <div class="grid-bg" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <a class="brand-link" href="../index.html">
+      <img src="../brand/casper-logo-dark.svg" alt="Casper — The Friendly Ghostwriter" class="brand-logo">
+    </a>
+    <nav class="nav-links" aria-label="Documentation navigation">
+      <a href="../index.html#docs">All Docs</a>
+      <a href="using.html">Using</a>
+      <a href="data-model.html">Data Model</a>
+      <a href="api-reference.html">API</a>
+      <a href="testing.html">Testing</a>
+      <a href="adr/README.html">ADRs</a>
+      <a class="btn-outline" href="https://github.com/bsommers/casper" target="_blank" rel="noopener">GitHub</a>
+    </nav>
+  </header>
+
+  <main class="container doc-container">
+    <div class="hud-card doc-toolbar">
+      <div class="doc-toolbar-left">
+        <a class="dl-link" href="../index.html#docs">&larr; Back to Hub</a>
+        <span class="tag">api-reference.md</span>
+      </div>
+      <div class="doc-toolbar-right">
+        <div class="pill-group" role="group" aria-label="Document view mode">
+          <span class="pill active" aria-current="page">Pre-Rendered HTML</span>
+          <a class="pill" href="../doc.html?file=api-reference.md">Dynamic JS Viewer</a>
+        </div>
+        <a class="dl-link" href="../api-reference.md" target="_blank" rel="noopener">View Raw .md</a>
+        <a class="dl-link" href="../api-reference.md" download="api-reference.md">Download .md</a>
+      </div>
+    </div>
+
+    <article class="hud-card markdown-body">
+      <nav class="doc-toc" aria-label="Table of contents">
+  <div class="doc-toc-title">On This Page</div>
+  <ul class="doc-toc-list">
+    <li class="toc-l2"><a href="#python-public-api-casper">Python Public API (casper.*)</a></li>
+    <li class="toc-l3"><a href="#error-hierarchy-caspererror">Error Hierarchy (CasperError)</a></li>
+    <li class="toc-l2"><a href="#surface-parity-matrix">Surface Parity Matrix</a></li>
+    <li class="toc-l2"><a href="#localhost-web-http-api">Localhost Web HTTP API</a></li>
+    <li class="toc-l3"><a href="#endpoints">Endpoints</a></li>
+    <li class="toc-l3"><a href="#security-headers-bounds-and-isolation">Security Headers, Bounds, and Isolation</a></li>
+  </ul>
+</nav>
+
+<h1 id="api-reference">API Reference</h1>
+<p>Casper routes its Python public API, CLI, and localhost HTTP server uniformly through the 10 typed functions in <a href="../../src/casper/commands.py"><code>src/casper/commands.py</code></a>.</p>
+<h2 id="python-public-api-casper">Python Public API (<code>casper.*</code>)</h2>
+<p><a href="../../src/casper/__init__.py"><code>src/casper/__init__.py</code></a> lazily exports all 10 commands, the <code>generate</code> alias, core model types, and the typed error hierarchy:</p>
+<ul>
+<li><strong>Commands:</strong> <code>write_draft</code>, <code>generate</code> (alias for <code>write_draft</code>), <code>extract_facts</code>, <code>score_draft</code>, <code>list_options</code>, <code>backend_status</code>, <code>author_build</code>, <code>author_inspect</code>, <code>author_show</code>, <code>author_list</code>, <code>author_diff</code></li>
+<li><strong>Models:</strong> <code>AuthorDiff</code>, <code>AuthorSummary</code>, <code>BackendKind</code>, <code>BackendStatusReport</code>, <code>Brief</code>, <code>ConformanceReport</code>, <code>Fact</code>, <code>FactKind</code>, <code>FactModel</code>, <code>FidelityMode</code>, <code>Result</code>, <code>Validation</code></li>
+<li><strong>Errors:</strong> <code>CasperError</code>, <code>InputError</code>, <code>LibraryError</code>, <code>ProfileError</code>, <code>ProfileNotFoundError</code>, <code>ProfileTamperedError</code>, <code>BackendError</code>, <code>SecurityError</code>, <code>PayloadTooLargeError</code>, <code>BusyError</code></li>
+</ul>
+<div class="code-block"><div class="code-block-head"><span class="code-lang">python</span></div><pre><code class="language-python">import casper
+
+brief = casper.Brief(
+    structure="status_update",
+    modality="slack",
+    source="developer",
+    target="management",
+    inputs=("examples/edge-migration-status.md",),
+    seed=1,
+)
+result = casper.write_draft(brief)
+print(result.text)</code></pre></div>
+<h3 id="error-hierarchy-caspererror">Error Hierarchy (<code>CasperError</code>)</h3>
+<p>Defined in <a href="../../src/casper/errors.py"><code>src/casper/errors.py</code></a>. Every error serializes via <code>.to_dict()</code> to <code>{"error": ..., "code": ...}</code> (plus optional <code>"details"</code>).</p>
+<div class="table-wrap"><table><thead><tr><th>Exception</th><th><code>code</code></th><th>CLI Exit</th><th>HTTP Status</th><th>Purpose</th></tr></thead><tbody><tr><td><code>CasperError</code></td><td><code>casper-error</code></td><td><code>2</code></td><td><code>400</code></td><td>Base operational error</td></tr><tr><td><code>InputError</code></td><td><code>input-error</code></td><td><code>2</code></td><td><code>400</code></td><td>Invalid inputs, flags, YAML, or unscorable text</td></tr><tr><td><code>LibraryError</code></td><td><code>library-error</code></td><td><code>2</code></td><td><code>400</code></td><td>Unknown persona/structure/modality or incompatible combo</td></tr><tr><td><code>ProfileError</code></td><td><code>profile-error</code></td><td><code>2</code></td><td><code>400</code></td><td>Corrupt profile YAML or invalid layer directive</td></tr><tr><td><code>ProfileNotFoundError</code></td><td><code>profile-not-found</code></td><td><code>2</code></td><td><code>404</code></td><td>Author ID does not exist in <code>authors_dir</code></td></tr><tr><td><code>ProfileTamperedError</code></td><td><code>profile-tampered</code></td><td><code>3</code></td><td><code>409</code></td><td><code>body_sha256</code> mismatch without <code>--force</code></td></tr><tr><td><code>BackendError</code></td><td><code>backend-error</code></td><td><code>2</code></td><td><code>502</code></td><td>External CLI unavailable, auth failure, timeout, or empty output</td></tr><tr><td><code>SecurityError</code></td><td><code>security-error</code></td><td><code>2</code></td><td><code>403</code></td><td>Non-loopback bind, bad headers, traversal, SSRF, or zip bomb</td></tr><tr><td><code>PayloadTooLargeError</code></td><td><code>payload-too-large</code></td><td><code>2</code></td><td><code>413</code></td><td>HTTP body <code>&gt; 262,144</code> bytes, notes <code>&gt; 40,000</code> chars, or text <code>&gt; 60,000</code> chars</td></tr><tr><td><code>BusyError</code></td><td><code>server-busy</code></td><td><code>2</code></td><td><code>503</code></td><td>Single-flight lock acquisition timeout</td></tr></tbody></table></div>
+<h2 id="surface-parity-matrix">Surface Parity Matrix</h2>
+<div class="table-wrap"><table><thead><tr><th>Operation</th><th>Python API (<code>casper.*</code>)</th><th>CLI (<code>casper ...</code>)</th><th>Web HTTP API (<code>casper serve</code>)</th></tr></thead><tbody><tr><td>Generate draft</td><td><code>write_draft(brief)</code> / <code>generate(brief)</code></td><td><code>casper write ...</code></td><td><code>POST /api/generate</code></td></tr><tr><td>Extract facts</td><td><code>extract_facts(inputs, notes, ...)</code></td><td><code>casper write --dry-run</code></td><td><code>POST /api/extract</code></td></tr><tr><td>Score voice</td><td><code>score_draft(author_ref, text_or_path, ...)</code></td><td><code>casper author score &lt;author&gt; &lt;file&gt;</code></td><td><code>POST /api/score</code></td></tr><tr><td>List options</td><td><code>list_options(project_dir, authors_dir)</code></td><td><code>casper write --list-options</code></td><td><code>GET /api/options</code></td></tr><tr><td>Backend status</td><td><code>backend_status(timeout, runner)</code></td><td><code>casper write --backend-status</code></td><td><code>GET /api/backend-status</code></td></tr><tr><td>Build author</td><td><code>author_build(...)</code></td><td><code>casper author build ...</code></td><td>CLI / Python only</td></tr><tr><td>Inspect author</td><td><code>author_inspect(author_ref, ...)</code></td><td><code>casper author inspect &lt;author&gt;</code></td><td>CLI / Python only</td></tr><tr><td>Show author</td><td><code>author_show(author_ref, ...)</code></td><td><code>casper author show &lt;author&gt;</code></td><td>CLI / Python only</td></tr><tr><td>List authors</td><td><code>author_list(authors_dir)</code></td><td><code>casper author list</code></td><td>Included in <code>GET /api/options</code></td></tr><tr><td>Diff authors</td><td><code>author_diff(author_a, author_b, ...)</code></td><td><code>casper author diff &lt;a&gt; &lt;b&gt;</code></td><td>CLI / Python only</td></tr></tbody></table></div>
+<h2 id="localhost-web-http-api">Localhost Web HTTP API</h2>
+<p>Implemented in <a href="../../src/casper/web/server.py"><code>src/casper/web/server.py</code></a> using Python's stdlib <code>ThreadingHTTPServer</code>.</p>
+<h3 id="endpoints">Endpoints</h3>
+<ul>
+<li><code>GET /</code> — Serves static UI entrypoint (<code>index.html</code>).</li>
+<li><code>GET /static/&lt;rel&gt;</code> — Serves static assets under <code>src/casper/web/static/</code> with path-traversal and iterative percent-decoding guards (<code>404</code> on invalid paths).</li>
+<li><code>GET /api/options</code> — Returns <code>{personas, structures, modalities, authors, backends}</code>.</li>
+<li><code>GET /api/backend-status</code> — Returns <code>{backends: {rules, claude, agy}}</code> availability report.</li>
+<li><code>POST /api/extract</code> — Accepts <code>{"notes": str, "fact_overrides": {...}}</code>; returns <code>{"facts": [...], "warnings": [...]}</code>.</li>
+<li><code>POST /api/generate</code> — Accepts <code>structure</code>, <code>modality</code>, <code>source</code>, <code>target</code>, <code>notes</code>, and optional <code>author</code>, <code>topic</code>, <code>seed</code>, <code>candidates</code>, <code>min_voice</code>, <code>banned</code>, <code>fact_overrides</code>, <code>backend</code>, <code>fallback</code>, <code>timeout</code>, <code>model</code>; returns <code>{"text", "validation", "fact_trace", "record", "facts", "backend"}</code>.</li>
+<li><code>POST /api/score</code> — Accepts <code>{"author": str, "text": str, "raw": bool?, "overlay": str?}</code>; returns <code>{"report": ...}</code>.</li>
+<li><code>POST /api/token</code> — Always returns HTTP <code>501</code> (<code>"not-implemented"</code>); Casper runs locally with no API tokens.</li>
+</ul>
+<h3 id="security-headers-bounds-and-isolation">Security Headers, Bounds, and Isolation</h3>
+<ul>
+<li><strong>Loopback-only binding:</strong> <code>make_server()</code> and <code>casper serve</code> reject any host other than <code>127.0.0.1</code> (<code>SecurityError</code>).</li>
+<li><strong>Request header validation:</strong> Every request requires an exact <code>Host</code> match (<code>127.0.0.1:&lt;port&gt;</code> or <code>localhost:&lt;port&gt;</code> without whitespace or <code>@</code>), rejects non-loopback <code>Origin</code> headers, and requires <code>Sec-Fetch-Site</code> (when present) to be <code>same-origin</code> or <code>none</code> (<code>403</code> otherwise).</li>
+<li><strong>Method &amp; media-type enforcement:</strong> Unsupported methods and <code>OPTIONS</code> return <code>405</code> with <code>Allow</code>. <code>POST</code> endpoints require <code>Content-Type: application/json</code> (<code>415</code> otherwise) and valid <code>Content-Length</code> (rejects chunked <code>Transfer-Encoding</code> with <code>411</code>).</li>
+<li><p><strong>Payload bounds (pre-read &amp; post-parse):</strong></p>
+<ul>
+<li>Maximum HTTP request body: <code>262,144</code> bytes (256 KiB; checked against <code>Content-Length</code> before reading the socket, returning <code>413</code>).</li>
+<li>Maximum <code>notes</code> length (<code>/api/extract</code>, <code>/api/generate</code>): <code>40,000</code> characters (<code>413</code>).</li>
+<li>Maximum <code>text</code> length (<code>/api/score</code>): <code>60,000</code> characters (<code>413</code>).</li>
+<li>Socket timeout: <code>15.0</code>s; single-flight execution lock timeout: <code>30.0</code>s (<code>503</code> <code>server-busy</code>).</li>
+</ul></li>
+<li><strong>Author path containment:</strong> HTTP endpoints invoke <code>commands.write_draft(..., allow_author_path=False)</code> and <code>commands.score_draft(..., allow_author_path=False)</code>, restricting author references to valid slugs inside <code>authors_dir</code>.</li>
+<li><strong>Response security headers:</strong> Every response sets <code>Content-Security-Policy: default-src 'self'</code>, <code>X-Content-Type-Options: nosniff</code>, <code>Referrer-Policy: no-referrer</code>, and <code>Cache-Control: no-store</code>.</li>
+</ul>
+    </article>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <img src="../brand/casper-mark.svg" alt="Casper Ghost Mark" class="footer-mark">
+      <span>Casper Documentation · Pre-Rendered Static HTML · Local-First · MIT License</span>
+    </div>
+  </footer>
+</body>
+</html>

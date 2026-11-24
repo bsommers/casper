@@ -1,0 +1,84 @@
+<!-- DO NOT EDIT DIRECTLY. Generated deterministically by scripts/build_docs_html.py -->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Casper Build Checkpoint — Casper Documentation</title>
+  <link rel="icon" type="image/svg+xml" href="../brand/favicon.svg">
+  <link rel="icon" href="../brand/favicon.ico" sizes="any">
+  <link rel="apple-touch-icon" href="../brand/apple-touch-icon.png">
+  <link rel="stylesheet" href="../site.css">
+</head>
+<body>
+  <div class="grid-bg" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <a class="brand-link" href="../index.html">
+      <img src="../brand/casper-logo-dark.svg" alt="Casper — The Friendly Ghostwriter" class="brand-logo">
+    </a>
+    <nav class="nav-links" aria-label="Documentation navigation">
+      <a href="../index.html#docs">All Docs</a>
+      <a href="using.html">Using</a>
+      <a href="data-model.html">Data Model</a>
+      <a href="api-reference.html">API</a>
+      <a href="testing.html">Testing</a>
+      <a href="adr/README.html">ADRs</a>
+      <a class="btn-outline" href="https://github.com/bsommers/casper" target="_blank" rel="noopener">GitHub</a>
+    </nav>
+  </header>
+
+  <main class="container doc-container">
+    <div class="hud-card doc-toolbar">
+      <div class="doc-toolbar-left">
+        <a class="dl-link" href="../index.html#docs">&larr; Back to Hub</a>
+        <span class="tag">CHECKPOINT.md</span>
+      </div>
+      <div class="doc-toolbar-right">
+        <div class="pill-group" role="group" aria-label="Document view mode">
+          <span class="pill active" aria-current="page">Pre-Rendered HTML</span>
+          <a class="pill" href="../doc.html?file=CHECKPOINT.md">Dynamic JS Viewer</a>
+        </div>
+        <a class="dl-link" href="../CHECKPOINT.md" target="_blank" rel="noopener">View Raw .md</a>
+        <a class="dl-link" href="../CHECKPOINT.md" download="CHECKPOINT.md">Download .md</a>
+      </div>
+    </div>
+
+    <article class="hud-card markdown-body">
+      <nav class="doc-toc" aria-label="Table of contents">
+  <div class="doc-toc-title">On This Page</div>
+  <ul class="doc-toc-list">
+    <li class="toc-l2"><a href="#goal-authorizations">Goal &amp; Authorizations</a></li>
+    <li class="toc-l2"><a href="#completed-tasks-s1s3-t01t15">Completed Tasks (S1–S3, T01–T15)</a></li>
+    <li class="toc-l2"><a href="#verification-gate">Verification Gate</a></li>
+  </ul>
+</nav>
+
+<h1 id="casper-build-checkpoint">Casper Build Checkpoint</h1>
+<p><strong>Status:</strong> COMPLETE — All Tasks <strong>S1–S3</strong> and <strong>T01–T15</strong> DONE &amp; VERIFIED
+<strong>Timestamp:</strong> 2026-11-23
+<strong>Workspace:</strong> <code>&lt;repo-root&gt;</code></p>
+<h2 id="goal-authorizations">Goal &amp; Authorizations</h2>
+<ul>
+<li><strong>Goal:</strong> Complete the greenfield build of <strong>Casper — The Friendly Ghostwriter</strong> strictly to the contract-first specification in <code>spec/00-overview.md</code> through <code>spec/05-brand-assets.md</code> (tasks <strong>T01–T15</strong> in <code>spec/04-implementation-plan.md</code>), ending with a green full <code>scripts/verify.sh</code> gate (all 8 tiers + <code>&gt;=90%</code> line / <code>&gt;=85%</code> branch coverage).</li>
+<li><strong>Supervision Gear:</strong> <strong>Gear 3 (Lights-out)</strong> authorized by user.</li>
+</ul>
+<h2 id="completed-tasks-s1s3-t01t15">Completed Tasks (S1–S3, T01–T15)</h2>
+<div class="table-wrap"><table><thead><tr><th>Task</th><th>Status</th><th>Key Deliverables</th></tr></thead><tbody><tr><td><strong>S1–S3</strong></td><td>DONE</td><td><code>spec/00-overview.md</code> .. <code>spec/05-brand-assets.md</code>, <code>SPEC.md</code></td></tr><tr><td><strong>T01</strong></td><td>DONE</td><td><code>pyproject.toml</code>, <code>.gitignore</code>, <code>AGENTS.md</code>, <code>docs/adr/0001..0012-*.md</code>, <code>scripts/build_spec.py</code>, <code>scripts/scan_secrets_and_paths.sh</code>, <code>scripts/verify.sh</code>, smoke/security harness</td></tr><tr><td><strong>T02</strong></td><td>DONE</td><td><code>errors.py</code>, <code>models.py</code>, <code>rewrites.py</code>, <code>documents.py</code>, <code>parsing.py</code>, <code>loaders/*</code>, <code>tests/fixtures/*</code>, loader unit/security/torture tests</td></tr><tr><td><strong>T03</strong></td><td>DONE</td><td><code>src/casper/data/*</code> (10 personas, 3 structures, 5 modalities, glossary, phrasebank, lexicons), <code>libraries.py</code>, <code>test_libraries.py</code>, <code>test_errors.py</code></td></tr><tr><td><strong>T04</strong></td><td>DONE</td><td><code>src/casper/features/{__init__,stability,sentences,lexical,voice,structure,signature}.py</code>, <code>profile.py</code>, <code>test_profile.py</code>, <code>test_atomic_save.py</code></td></tr><tr><td><strong>T05</strong></td><td>DONE</td><td><code>layers.py</code>, <code>test_layers.py</code>, <code>tests/security/test_privacy.py</code>, updated <code>test_errors.py</code></td></tr><tr><td><strong>T06</strong></td><td>DONE</td><td><code>conformance.py</code>, <code>scripts/calibrate_conformance.py</code>, <code>test_conformance.py</code></td></tr><tr><td><strong>T07</strong></td><td>DONE</td><td><code>catalog.py</code>, <code>test_catalog.py</code></td></tr><tr><td><strong>T08</strong></td><td>DONE</td><td><code>facts.py</code>, <code>test_facts.py</code>, updated <code>test_errors.py</code></td></tr><tr><td><strong>T09</strong></td><td>DONE</td><td><code>planner.py</code>, <code>test_planner.py</code></td></tr><tr><td><strong>T10</strong></td><td>DONE</td><td><code>modalities.py</code>, <code>realizer.py</code>, <code>test_modalities.py</code>, <code>test_realizer.py</code>, <code>tests/stress/test_realizer_bounds.py</code>, <code>tests/integration/test_properties.py</code></td></tr><tr><td><strong>T11</strong></td><td>DONE</td><td><code>validator.py</code>, <code>test_validator.py</code>, <code>tests/security/test_fidelity.py</code></td></tr><tr><td><strong>T12</strong></td><td>DONE</td><td><code>llm.py</code>, <code>tests/fakes/fake_agent.py</code> (9 modes), <code>tests/integration/test_llm.py</code>, updated <code>tests/security/test_privacy.py</code> (<code>claude</code> &amp; <code>agy</code> prompt privacy)</td></tr><tr><td><strong>T13</strong></td><td>DONE</td><td><code>pipeline.py</code>, <code>commands.py</code> (exact 10 operations), <code>cli.py</code>, <code>__init__.py</code> (lazy exports), 11 synthetic <code>tests/golden/*</code>, <code>test_cli_boot.py</code>, <code>test_golden.py</code>, <code>test_determinism.py</code>, <code>test_cli_e2e.py</code>, <code>test_latency_budgets.py</code>, updated <code>test_errors.py</code> &amp; <code>test_privacy.py</code></td></tr><tr><td><strong>T14</strong></td><td>DONE</td><td><code>scripts/build_brand.py</code>, 48 assets in <code>docs/brand/*</code>, 10 byte-synced files in <code>src/casper/web/static/img/*</code>, <code>src/casper/web/{__init__,server}.py</code>, <code>src/casper/web/static/{index.html,theme.css,app.js}</code>, <code>test_brand.py</code>, <code>test_web_app.py</code>, <code>test_web_security.py</code>, <code>test_web_e2e.py</code>, <code>test_surface_parity.py</code>, <code>test_web_concurrency.py</code>, <code>test_web_faults.py</code></td></tr><tr><td><strong>T15</strong></td><td>DONE</td><td><code>scripts/start.sh</code>, <code>scripts/stop.sh</code>, <code>scripts/build_examples.py</code>, <code>examples/edge-migration-status.md</code>, <code>examples/outputs/*</code>, <code>authors/bill.yaml</code> (clean synthetic corpus, zero private email), <code>README.md</code>, <code>docs/{using,data-model,api-reference,testing}.md</code>, <code>test_scripts.py</code>, <code>test_examples.py</code></td></tr></tbody></table></div>
+<h2 id="verification-gate">Verification Gate</h2>
+<ul>
+<li>Full pre-release Gate 3 (<code>scripts/verify.sh</code>): lint (<code>ruff</code>), typecheck (<code>mypy</code>), <code>spec-sync</code>, <code>secret-scan</code>, all 8 test tiers (<code>smoke</code>, <code>unit</code>, <code>integration</code>, <code>system</code>, <code>security</code>, <code>perf</code>, <code>stress</code>, <code>torture</code>), and coverage tripwire (<code>&gt;=90%</code> line, <code>&gt;=85%</code> branch, <code>0</code> skips).</li>
+<li>Sync checks: <code>scripts/build_spec.py --check</code>, <code>scripts/build_brand.py --check</code>, <code>scripts/build_examples.py --check</code>.</li>
+<li>Active background subagents/tasks: None (0 running).</li>
+</ul>
+    </article>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <img src="../brand/casper-mark.svg" alt="Casper Ghost Mark" class="footer-mark">
+      <span>Casper Documentation · Pre-Rendered Static HTML · Local-First · MIT License</span>
+    </div>
+  </footer>
+</body>
+</html>

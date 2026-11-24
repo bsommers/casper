@@ -1,0 +1,150 @@
+<!-- DO NOT EDIT DIRECTLY. Generated deterministically by scripts/build_docs_html.py -->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Data Model &amp; Shipped Libraries — Casper Documentation</title>
+  <link rel="icon" type="image/svg+xml" href="../brand/favicon.svg">
+  <link rel="icon" href="../brand/favicon.ico" sizes="any">
+  <link rel="apple-touch-icon" href="../brand/apple-touch-icon.png">
+  <link rel="stylesheet" href="../site.css">
+</head>
+<body>
+  <div class="grid-bg" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <a class="brand-link" href="../index.html">
+      <img src="../brand/casper-logo-dark.svg" alt="Casper — The Friendly Ghostwriter" class="brand-logo">
+    </a>
+    <nav class="nav-links" aria-label="Documentation navigation">
+      <a href="../index.html#docs">All Docs</a>
+      <a href="using.html">Using</a>
+      <a href="data-model.html">Data Model</a>
+      <a href="api-reference.html">API</a>
+      <a href="testing.html">Testing</a>
+      <a href="adr/README.html">ADRs</a>
+      <a class="btn-outline" href="https://github.com/bsommers/casper" target="_blank" rel="noopener">GitHub</a>
+    </nav>
+  </header>
+
+  <main class="container doc-container">
+    <div class="hud-card doc-toolbar">
+      <div class="doc-toolbar-left">
+        <a class="dl-link" href="../index.html#docs">&larr; Back to Hub</a>
+        <span class="tag">data-model.md</span>
+      </div>
+      <div class="doc-toolbar-right">
+        <div class="pill-group" role="group" aria-label="Document view mode">
+          <span class="pill active" aria-current="page">Pre-Rendered HTML</span>
+          <a class="pill" href="../doc.html?file=data-model.md">Dynamic JS Viewer</a>
+        </div>
+        <a class="dl-link" href="../data-model.md" target="_blank" rel="noopener">View Raw .md</a>
+        <a class="dl-link" href="../data-model.md" download="data-model.md">Download .md</a>
+      </div>
+    </div>
+
+    <article class="hud-card markdown-body">
+      <nav class="doc-toc" aria-label="Table of contents">
+  <div class="doc-toc-title">On This Page</div>
+  <ul class="doc-toc-list">
+    <li class="toc-l2"><a href="#core-enumerations">Core Enumerations</a></li>
+    <li class="toc-l2"><a href="#core-dataclasses">Core Dataclasses</a></li>
+    <li class="toc-l2"><a href="#author-profile-yaml-schema">Author Profile YAML Schema</a></li>
+    <li class="toc-l3"><a href="#the-32-stabilitykeys">The 32 STABILITY_KEYS</a></li>
+    <li class="toc-l3"><a href="#integrity-guard-3-layer-merge-algebra">Integrity Guard &amp; 3-Layer Merge Algebra</a></li>
+    <li class="toc-l2"><a href="#shipped-yaml-libraries-srccasperdata">Shipped YAML Libraries (src/casper/data/)</a></li>
+  </ul>
+</nav>
+
+<h1 id="data-model-shipped-libraries">Data Model &amp; Shipped Libraries</h1>
+<p>Reference for Casper's core types in <a href="../../src/casper/models.py"><code>src/casper/models.py</code></a>, author profile YAML schema in <a href="../../src/casper/profile.py"><code>src/casper/profile.py</code></a> and <a href="../../src/casper/layers.py"><code>src/casper/layers.py</code></a>, and shipped YAML libraries under <a href="../../src/casper/data"><code>src/casper/data/</code></a>.</p>
+<h2 id="core-enumerations">Core Enumerations</h2>
+<div class="table-wrap"><table><thead><tr><th>Enum</th><th>Values</th></tr></thead><tbody><tr><td><code>BlockKind</code></td><td><code>title</code>, <code>heading</code>, <code>paragraph</code>, <code>list_item</code>, <code>quote</code>, <code>code</code>, <code>summary</code>, <code>audience</code>, <code>resources</code> (<code>EXCLUDED_VOICE_BLOCK_KINDS</code> excludes <code>summary</code>, <code>audience</code>, <code>resources</code>)</td></tr><tr><td><code>FactKind</code></td><td><code>status</code>, <code>progress</code>, <code>risk</code>, <code>next_step</code>, <code>decision</code>, <code>background</code>, <code>detail</code>, <code>metric</code>, <code>ask</code></td></tr><tr><td><code>PersonaKind</code></td><td><code>source</code>, <code>target</code></td></tr><tr><td><code>DepthLevel</code></td><td><code>low</code> (cap <code>1</code>), <code>medium</code> (cap <code>3</code>), <code>high</code> (cap <code>6</code>)</td></tr><tr><td><code>JargonLevel</code></td><td><code>low</code>, <code>medium</code>, <code>high</code></td></tr><tr><td><code>MarkupKind</code></td><td><code>markdown</code>, <code>slack</code>, <code>html</code>, <code>plain</code></td></tr><tr><td><code>BackendKind</code></td><td><code>rules</code>, <code>claude</code>, <code>agy</code></td></tr><tr><td><code>FidelityMode</code></td><td><code>strict</code>, <code>assisted</code></td></tr><tr><td><code>CheckLevel</code></td><td><code>error</code>, <code>warning</code></td></tr><tr><td><code>MatchBand</code></td><td><code>strong</code>, <code>close</code>, <code>partial</code>, <code>different</code></td></tr><tr><td><code>ConfidenceBand</code></td><td><code>high</code>, <code>medium</code>, <code>low</code></td></tr></tbody></table></div>
+<h2 id="core-dataclasses">Core Dataclasses</h2>
+<ul>
+<li><strong><code>Block</code></strong>: <code>kind</code>, <code>text</code>, <code>level</code>, <code>links</code>, <code>emphasis_lead</code></li>
+<li><strong><code>Document</code></strong>: <code>source</code>, <code>format</code>, <code>title</code>, <code>authors</code>, <code>published</code>, <code>modified</code>, <code>canonical_url</code>, <code>description</code>, <code>blocks</code>, <code>sha256</code>, <code>notes</code></li>
+<li><strong><code>Fact</code></strong>: <code>id</code>, <code>kind</code> (<code>FactKind</code>), <code>text</code>, <code>source</code>, <code>order</code>, <code>entities</code>, <code>metrics</code>, <code>dates</code>, <code>owners</code>, <code>salience</code>, <code>classification_source</code></li>
+<li><strong><code>FactModel</code></strong>: <code>facts</code>, <code>graph</code> (NetworkX relation graph), <code>input_hashes</code>, <code>digest</code>, <code>warnings</code></li>
+<li><strong><code>Persona</code></strong>: <code>id</code>, <code>kind</code>, <code>priorities</code>, <code>vocabulary_include</code>, <code>vocabulary_avoid</code>, <code>detail_depth</code>, <code>jargon_level</code>, <code>framing_patterns</code>, <code>typical_concerns</code>, <code>cta_styles</code>, <code>section_priority</code></li>
+<li><strong><code>Section</code> &amp; <code>Structure</code></strong>: <code>Structure</code> (<code>id</code>, <code>goal</code>, <code>sections</code>, <code>compatible_modalities</code>, <code>default_target_personas</code>) contains <code>Section</code> entries (<code>name</code>, <code>purpose</code>, <code>fact_kinds</code>, <code>required</code>, <code>min_words</code>, <code>max_words</code>, <code>heading</code>)</li>
+<li><strong><code>Modality</code></strong>: <code>id</code>, <code>markup</code>, <code>max_words</code>, <code>max_chars</code>, <code>title</code>, <code>headings</code> (<code>none</code>, <code>h2</code>, <code>bold</code>, <code>slack_bold</code>), <code>bullets</code>, <code>description</code></li>
+<li><strong><code>Glossary</code></strong>: <code>plain</code> (jargon simplifications), <code>preferred</code> (wording substitutions), <code>banned</code> (disallowed terms)</li>
+<li><strong><code>Libraries</code></strong>: <code>personas</code>, <code>structures</code>, <code>modalities</code>, <code>glossary</code>, <code>phrasebank</code>, <code>lexicons</code>, <code>digest</code></li>
+<li><strong><code>Plan</code> &amp; <code>PlanSection</code></strong>: <code>Plan</code> (<code>structure</code>, <code>sections</code>, <code>unused_facts</code>, <code>warnings</code>) groups <code>Fact</code>s into <code>PlanSection</code>s</li>
+<li><strong><code>AdaptedPlan</code></strong>: <code>structure</code>, <code>source</code>, <code>target</code>, <code>sections</code>, <code>substitutions</code>, <code>cta_style</code>, <code>warnings</code></li>
+<li><strong><code>Draft</code>, <code>DraftSection</code>, &amp; <code>Sentence</code></strong>: <code>Draft</code> (<code>sections</code>, <code>title</code>, <code>warnings</code>, <code>candidates_considered</code>, <code>backend</code>, <code>declared_additions</code>, <code>meta</code>) holds <code>DraftSection</code>s of <code>Sentence</code>s (<code>text</code>, <code>fact_ids</code>, <code>frame</code>)</li>
+<li><strong><code>Validation</code> &amp; <code>CheckFinding</code></strong>: <code>Validation</code> (<code>ok</code>, <code>findings</code>, <code>persona_score</code>, <code>voice_report</code>, <code>fidelity_mode</code>)</li>
+<li><strong><code>ConformanceReport</code></strong>, <strong><code>FeatureScore</code></strong>, &amp; <strong><code>GapItem</code></strong>: <code>ConformanceReport</code> (<code>overall</code>, <code>band</code>, <code>confidence</code>, <code>word_count</code>, <code>dimensions</code>, <code>features</code>, <code>largest_gaps</code>, <code>signature_matches</code>, <code>frame_matches</code>)</li>
+<li><strong><code>ReproducibilityRecord</code></strong> &amp; <strong><code>BackendRecord</code></strong>: <code>ReproducibilityRecord</code> (<code>tool_version</code>, <code>seed</code>, <code>candidates</code>, <code>selectors</code>, <code>input_hashes</code>, <code>facts_digest</code>, <code>config_digest</code>, <code>author_corpus_sha256</code>, <code>output_sha256</code>, <code>backend</code>, <code>record_sha256</code>)</li>
+<li><strong><code>Brief</code></strong>: <code>structure</code>, <code>modality</code>, <code>source</code>, <code>target</code>, <code>author</code>, <code>inputs</code>, <code>notes</code>, <code>topic</code>, <code>seed</code>, <code>candidates</code>, <code>min_voice</code>, <code>banned</code>, <code>fact_overrides</code>, <code>project_dir</code>, <code>authors_dir</code>, <code>backend</code>, <code>fallback</code>, <code>timeout</code>, <code>model</code></li>
+<li><strong><code>Result</code></strong>: <code>text</code>, <code>draft</code>, <code>validation</code>, <code>fact_trace</code>, <code>record</code>, <code>facts</code></li>
+</ul>
+<p>Additional command summary dataclasses: <code>DriftIssue</code>, <code>DriftReport</code>, <code>AuthorSummary</code>, <code>AuthorDiff</code>, <code>BackendAvailability</code>, <code>BackendStatusReport</code>.</p>
+<h2 id="author-profile-yaml-schema">Author Profile YAML Schema</h2>
+<p>Generated profiles (<code>schema_version: 1</code>) contain metadata (<code>author</code>, <code>generated</code>, <code>corpus</code>, <code>sources</code>), an 8-rule <code>style_guide</code> (<code>sentences</code>, <code>paragraphs</code>, <code>lexical</code>, <code>voice</code>, <code>punctuation</code>, <code>rhetoric</code>, <code>headings</code>, <code>structure</code>), and <strong>11 extracted feature groups</strong> plus <strong>32-key cross-document <code>stability</code></strong>:</p>
+<ol>
+<li><code>sentences</code></li>
+<li><code>paragraphs</code></li>
+<li><code>lexical</code></li>
+<li><code>voice</code></li>
+<li><code>typography</code></li>
+<li><code>headings</code></li>
+<li><code>lists</code></li>
+<li><code>structure</code></li>
+<li><code>function_word_per_1k</code></li>
+<li><code>signature</code></li>
+<li><code>exemplars</code></li>
+</ol>
+<h3 id="the-32-stabilitykeys">The 32 <code>STABILITY_KEYS</code></h3>
+<p>Defined in <a href="../../src/casper/features/stability.py"><code>src/casper/features/stability.py</code></a> across 7 scored dimensions (<code>rhythm</code>, <code>openers</code>, <code>paragraphs</code>, <code>register</code>, <code>point_of_view</code>, <code>punctuation</code>, <code>rhetoric</code>; <code>DIMENSION_WEIGHTS</code> also includes <code>function_words</code> and <code>structure</code>):</p>
+<ul>
+<li><strong>rhythm (10):</strong> <code>mean_sentence_length</code>, <code>short_sentence_rate</code>, <code>long_sentence_rate</code>, <code>sentence_length_cv</code>, <code>passive_rate</code>, <code>commas_per_sentence</code>, <code>subordinate_clauses_per_sentence</code>, <code>fragment_rate</code>, <code>question_rate</code>, <code>exclamation_rate</code></li>
+<li><strong>openers (3):</strong> <code>conjunction_start_rate</code>, <code>pronoun_start_rate</code>, <code>transition_start_rate</code></li>
+<li><strong>paragraphs (2):</strong> <code>sentences_per_paragraph</code>, <code>single_sentence_paragraph_rate</code></li>
+<li><strong>register (4):</strong> <code>flesch_kincaid_grade</code>, <code>mean_word_length</code>, <code>long_word_rate</code>, <code>acronyms_per_1k</code></li>
+<li><strong>point_of_view (4):</strong> <code>first_person_singular_per_1k</code>, <code>first_person_plural_per_1k</code>, <code>second_person_per_1k</code>, <code>contractions_per_1k</code></li>
+<li><strong>punctuation (5):</strong> <code>em_dashes_per_1k</code>, <code>colons_per_1k</code>, <code>semicolons_per_1k</code>, <code>parentheses_per_1k</code>, <code>commas_per_1k</code></li>
+<li><strong>rhetoric (4):</strong> <code>transitions_per_1k</code>, <code>intensifiers_per_1k</code>, <code>hedges_per_1k</code>, <code>contrast_frames_per_1k</code></li>
+</ul>
+<h3 id="integrity-guard-3-layer-merge-algebra">Integrity Guard &amp; 3-Layer Merge Algebra</h3>
+<ul>
+<li><strong><code>generated.body_sha256</code> Tamper Guard:</strong> Canonical SHA-256 of the profile JSON payload (<code>sort_keys=True</code>, excluding <code>generated.body_sha256</code>). Any manual edit to <code>&lt;id&gt;.yaml</code> causes <code>check_profile_writable()</code> to raise <code>ProfileTamperedError</code> on rebuild unless <code>--force</code> is given (which saves <code>&lt;id&gt;.yaml.bak</code>).</li>
+<li><strong>Resolution Precedence:</strong> <code>generated</code> -&gt; <code>curated</code> -&gt; <code>local</code> -&gt; <code>curated.overlays.&lt;name&gt;</code> -&gt; <code>local.overlays.&lt;name&gt;</code>.</li>
+<li><strong>List Directives:</strong> Plain list assignments in higher layers raise <code>ProfileError</code>. Lists must be modified using <code>$add</code>, <code>$remove</code>, or <code>$replace</code> mappings (<code>$replace</code> supersedes <code>$add</code>/<code>$remove</code>).</li>
+<li><strong><code>style_guide</code> Edits:</strong> Must be an <code>id</code>-keyed mapping where each value is <code>"$remove"</code>, a replacement rule string, or <code>{"area": ..., "rule": ...}</code>.</li>
+</ul>
+<h2 id="shipped-yaml-libraries-srccasperdata">Shipped YAML Libraries (<code>src/casper/data/</code>)</h2>
+<p>All libraries can be extended or overridden per project via <code>--project-dir</code> (<code>project_dir</code> in <code>Brief</code>).</p>
+<ul>
+<li><p><strong>10 Personas (<code>personas/</code>):</strong></p>
+<ul>
+<li>Source (5): <code>analyst</code>, <code>developer</code>, <code>product_owner</code>, <code>project_manager</code>, <code>tech_lead</code></li>
+<li>Target (5): <code>customer</code>, <code>engineering</code>, <code>executive</code>, <code>management</code>, <code>product_owner</code></li>
+</ul></li>
+<li><p><strong>3 Structures (<code>structures/</code>) &amp; 11 Valid <code>structure × modality</code> Combinations:</strong></p>
+<ul>
+<li><code>status_update</code> × <code>{slack, email, memo, plain}</code> (4)</li>
+<li><code>decision_memo</code> × <code>{memo, email, article, plain}</code> (4)</li>
+<li><code>technical_article</code> × <code>{article, memo, plain}</code> (3)</li>
+</ul></li>
+<li><p><strong>5 Modalities (<code>modalities/</code>):</strong></p>
+<ul>
+<li><code>slack</code> (<code>slack</code>, 180w / 1,200c), <code>email</code> (<code>markdown</code>, 350w / 2,500c), <code>memo</code> (<code>markdown</code>, 800w / 6,000c), <code>article</code> (<code>html</code>, 2,500w / 20,000c), <code>plain</code> (<code>plain</code>, 200w / 1,400c)</li>
+</ul></li>
+<li><strong>Default Glossary (<code>glossaries/default.yaml</code>):</strong> 10 <code>plain</code> jargon mappings, 6 <code>preferred</code> substitutions, 5 <code>banned</code> buzzwords.</li>
+<li><strong>Phrasebank (<code>phrasebank.yaml</code>):</strong> 7 CTA categories (<code>approval</code>, <code>alignment</code>, <code>decision</code>, <code>direct</code>, <code>feedback</code>, <code>next_step</code>, <code>technical_review</code>).</li>
+<li><strong>Lexicons (<code>lexicons.yaml</code>):</strong> <code>transitions</code> (19), <code>intensifiers</code> (12), <code>hedges</code> (18), <code>negations</code> (25), and <code>function_words</code> (60).</li>
+</ul>
+    </article>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <img src="../brand/casper-mark.svg" alt="Casper Ghost Mark" class="footer-mark">
+      <span>Casper Documentation · Pre-Rendered Static HTML · Local-First · MIT License</span>
+    </div>
+  </footer>
+</body>
+</html>

@@ -1,8 +1,9 @@
-/* Zero-dependency, strictly DOM/textContent Markdown renderer for Casper GitHub Pages. */
+/* Dynamic Markdown documentation viewer wired to CasperMarkdown (strict DOM/textContent). */
 (function () {
   "use strict";
 
-  const ALLOWED_DOC_RE = /^(?:using|data-model|api-reference|testing|CHECKPOINT)\.md$|^adr\/(?:README|TEMPLATE|[0-9]{4}-[a-z0-9-]+)\.md$/;
+  const ALLOWED_DOC_RE =
+    /^(?:using|data-model|api-reference|testing|CHECKPOINT)\.md$|^adr\/(?:README|TEMPLATE|[0-9]{4}-[a-z0-9-]+)\.md$/;
 
   function el(tag, className, text) {
     const node = document.createElement(tag);
@@ -36,202 +37,43 @@
     return { href: target + hash, external: false };
   }
 
-  function appendInline(parent, text, baseFile) {
-    // Tokenize inline code, links [label](url), bold **text**, italic *text*
-    const tokenRe = /(`[^`]+`|\[[^\]]+\]\([^)]+\)|\*\*[^*]+\*\*|\*[^*]+\*)/g;
-    let last = 0;
-    let match;
-    while ((match = tokenRe.exec(text)) !== null) {
-      if (match.index > last) {
-        parent.appendChild(document.createTextNode(text.slice(last, match.index)));
-      }
-      const tok = match[0];
-      if (tok.startsWith("`") && tok.endsWith("`")) {
-        parent.appendChild(el("code", "", tok.slice(1, -1)));
-      } else if (tok.startsWith("[")) {
-        const closeBracket = tok.indexOf("](");
-        const label = tok.slice(1, closeBracket);
-        const rawHref = tok.slice(closeBracket + 2, -1).trim();
-        const link = document.createElement("a");
-        const resolved = resolveRelativeMd(baseFile, rawHref);
-        link.href = resolved.href;
-        if (resolved.external) {
-          link.target = "_blank";
-          link.rel = "noopener";
-        }
-        link.textContent = label;
-        parent.appendChild(link);
-      } else if (tok.startsWith("**") && tok.endsWith("**")) {
-        parent.appendChild(el("strong", "", tok.slice(2, -2)));
-      } else if (tok.startsWith("*") && tok.endsWith("*")) {
-        parent.appendChild(el("em", "", tok.slice(1, -1)));
-      } else {
-        parent.appendChild(document.createTextNode(tok));
-      }
-      last = tokenRe.lastIndex;
+  function renderToc(tocNav, toc) {
+    if (!tocNav) return false;
+    if (!toc || toc.length < 2) {
+      tocNav.classList.add("hidden");
+      tocNav.replaceChildren();
+      return false;
     }
-    if (last < text.length) {
-      parent.appendChild(document.createTextNode(text.slice(last)));
+
+    const title = el("h2", "doc-toc-title", "Contents");
+    const list = el("ul", "doc-toc-list");
+
+    for (const entry of toc) {
+      const li = el("li", "doc-toc-lvl-" + Math.min(Math.max(entry.level, 1), 6));
+      const a = document.createElement("a");
+      a.setAttribute("href", "#" + entry.id);
+      a.textContent = entry.text;
+      li.appendChild(a);
+      list.appendChild(li);
     }
+
+    tocNav.replaceChildren(title, list);
+    tocNav.classList.remove("hidden");
+    return true;
   }
 
-  function slugify(text) {
-    return text
-      .toLowerCase()
-      .replace(/[^a-z0-9\s-]/g, "")
-      .trim()
-      .replace(/\s+/g, "-");
-  }
-
-  function parseTableRow(line) {
-    const trimmed = line.trim().replace(/^\|/, "").replace(/\|$/, "");
-    return trimmed.split("|").map((c) => c.trim());
-  }
-
-  function isTableSeparator(line) {
-    return /^\s*\|?(?:\s*:?-+:?\s*\|)+\s*:?-+:?\s*\|?\s*$/.test(line);
-  }
-
-  function renderMarkdown(mdText, container, baseFile) {
-    container.replaceChildren();
-    const lines = mdText.replace(/\r\n/g, "\n").split("\n");
-    let i = 0;
-
-    while (i < lines.length) {
-      const line = lines[i];
-      const trimmed = line.trim();
-
-      if (!trimmed) {
-        i += 1;
-        continue;
-      }
-
-      // Fenced code block
-      if (trimmed.startsWith("```")) {
-        const codeLines = [];
-        i += 1;
-        while (i < lines.length && !lines[i].trim().startsWith("```")) {
-          codeLines.push(lines[i]);
-          i += 1;
-        }
-        i += 1; // closing fence
-        const pre = document.createElement("pre");
-        pre.appendChild(el("code", "", codeLines.join("\n")));
-        container.appendChild(pre);
-        continue;
-      }
-
-      // Horizontal rule
-      if (/^(?:---+|\*\*\*+|___+)$/.test(trimmed)) {
-        container.appendChild(document.createElement("hr"));
-        i += 1;
-        continue;
-      }
-
-      // ATX headings
-      const hMatch = trimmed.match(/^(#{1,6})\s+(.+)$/);
-      if (hMatch) {
-        const level = Math.min(hMatch[1].length, 6);
-        const headingText = hMatch[2].replace(/\s+#+\s*$/, "");
-        const h = document.createElement("h" + level);
-        h.id = slugify(headingText);
-        appendInline(h, headingText, baseFile);
-        container.appendChild(h);
-        if (level === 1) {
-          document.title = headingText + " — Casper Docs";
-        }
-        i += 1;
-        continue;
-      }
-
-      // GFM Table
-      if (trimmed.includes("|") && i + 1 < lines.length && isTableSeparator(lines[i + 1])) {
-        const wrap = el("div", "table-wrap");
-        const table = document.createElement("table");
-        const thead = document.createElement("thead");
-        const trHead = document.createElement("tr");
-        for (const cell of parseTableRow(lines[i])) {
-          const th = document.createElement("th");
-          appendInline(th, cell, baseFile);
-          trHead.appendChild(th);
-        }
-        thead.appendChild(trHead);
-        table.appendChild(thead);
-
-        const tbody = document.createElement("tbody");
-        i += 2;
-        while (i < lines.length && lines[i].trim() && lines[i].includes("|")) {
-          const tr = document.createElement("tr");
-          for (const cell of parseTableRow(lines[i])) {
-            const td = document.createElement("td");
-            appendInline(td, cell, baseFile);
-            tr.appendChild(td);
-          }
-          tbody.appendChild(tr);
-          i += 1;
-        }
-        table.appendChild(tbody);
-        wrap.appendChild(table);
-        container.appendChild(wrap);
-        continue;
-      }
-
-      // Blockquote
-      if (trimmed.startsWith(">")) {
-        const qLines = [];
-        while (i < lines.length && lines[i].trim().startsWith(">")) {
-          qLines.push(lines[i].trim().replace(/^>\s?/, ""));
-          i += 1;
-        }
-        const bq = document.createElement("blockquote");
-        appendInline(bq, qLines.join(" "), baseFile);
-        container.appendChild(bq);
-        continue;
-      }
-
-      // Unordered list
-      if (/^[-*+]\s+/.test(trimmed)) {
-        const ul = document.createElement("ul");
-        while (i < lines.length && /^\s*[-*+]\s+/.test(lines[i])) {
-          const li = document.createElement("li");
-          appendInline(li, lines[i].trim().replace(/^[-*+]\s+/, ""), baseFile);
-          ul.appendChild(li);
-          i += 1;
-        }
-        container.appendChild(ul);
-        continue;
-      }
-
-      // Ordered list
-      if (/^\d+[.)]\s+/.test(trimmed)) {
-        const ol = document.createElement("ol");
-        while (i < lines.length && /^\s*\d+[.)]\s+/.test(lines[i])) {
-          const li = document.createElement("li");
-          appendInline(li, lines[i].trim().replace(/^\d+[.)]\s+/, ""), baseFile);
-          ol.appendChild(li);
-          i += 1;
-        }
-        container.appendChild(ol);
-        continue;
-      }
-
-      // Paragraph (join contiguous plain lines)
-      const pLines = [];
-      while (
-        i < lines.length &&
-        lines[i].trim() &&
-        !lines[i].trim().startsWith("#") &&
-        !lines[i].trim().startsWith("```") &&
-        !lines[i].trim().startsWith(">") &&
-        !/^[-*+]\s+/.test(lines[i].trim()) &&
-        !/^\d+[.)]\s+/.test(lines[i].trim())
-      ) {
-        pLines.push(lines[i].trim());
-        i += 1;
-      }
-      const p = document.createElement("p");
-      appendInline(p, pLines.join(" "), baseFile);
-      container.appendChild(p);
+  async function copyToClipboard(text, button, defaultLabel) {
+    try {
+      await navigator.clipboard.writeText(text);
+      button.textContent = "Copied!";
+      setTimeout(function () {
+        button.textContent = defaultLabel;
+      }, 1200);
+    } catch (_err) {
+      button.textContent = "Copy failed";
+      setTimeout(function () {
+        button.textContent = defaultLabel;
+      }, 1200);
     }
   }
 
@@ -241,23 +83,33 @@
     const safeFile = ALLOWED_DOC_RE.test(requested) ? requested : "using.md";
 
     const renderedEl = document.getElementById("doc-rendered");
+    const tocNav = document.getElementById("doc-toc");
     const rawBox = document.getElementById("doc-raw");
     const rawCode = document.getElementById("doc-raw-code");
     const badge = document.getElementById("doc-path-badge");
+    const staticHtmlLink = document.getElementById("btn-static-html");
     const openRaw = document.getElementById("btn-open-raw");
     const dlLink = document.getElementById("btn-download-md");
     const btnRendered = document.getElementById("btn-view-rendered");
     const btnRaw = document.getElementById("btn-view-raw");
 
     badge.textContent = "docs/" + safeFile;
-    openRaw.href = safeFile;
-    dlLink.href = safeFile;
+    if (staticHtmlLink) {
+      staticHtmlLink.setAttribute("href", "rendered/" + safeFile.replace(/\.md$/, ".html"));
+    }
+    openRaw.setAttribute("href", safeFile);
+    dlLink.setAttribute("href", safeFile);
     dlLink.setAttribute("download", safeFile.split("/").pop() || "document.md");
+
+    let hasToc = false;
 
     function setMode(mode) {
       const showRaw = mode === "raw";
       renderedEl.classList.toggle("hidden", showRaw);
       rawBox.classList.toggle("hidden", !showRaw);
+      if (tocNav) {
+        tocNav.classList.toggle("hidden", showRaw || !hasToc);
+      }
       btnRendered.classList.toggle("active", !showRaw);
       btnRaw.classList.toggle("active", showRaw);
     }
@@ -269,7 +121,8 @@
       setMode("raw");
     });
 
-    if (params.get("mode") === "raw") {
+    const initialRaw = params.get("mode") === "raw";
+    if (initialRaw) {
       setMode("raw");
     }
 
@@ -281,23 +134,48 @@
       }
       rawText = await resp.text();
       rawCode.textContent = rawText;
-      renderMarkdown(rawText, renderedEl, safeFile);
+
+      const renderer = window.CasperMarkdown;
+      if (!renderer || typeof renderer.renderMarkdownToDom !== "function") {
+        throw new Error("CasperMarkdown renderer not loaded");
+      }
+
+      const result = renderer.renderMarkdownToDom(rawText, renderedEl, {
+        resolveLink: function (href) {
+          return resolveRelativeMd(safeFile, href);
+        },
+        onCopyCode: function (code, button) {
+          copyToClipboard(code, button, "Copy");
+        },
+      });
+
+      hasToc = renderToc(tocNav, result.toc);
+      if (initialRaw && tocNav) {
+        tocNav.classList.add("hidden");
+      }
+
+      const h1 = result.toc.find(function (entry) {
+        return entry.level === 1;
+      });
+      if (h1 && h1.text) {
+        document.title = h1.text + " — Casper Docs";
+      }
+
+      if (window.location.hash && window.location.hash.length > 1) {
+        const targetId = decodeURIComponent(window.location.hash.slice(1));
+        const anchor = document.getElementById(targetId);
+        if (anchor && typeof anchor.scrollIntoView === "function") {
+          anchor.scrollIntoView();
+        }
+      }
     } catch (err) {
       renderedEl.replaceChildren(
-        el("p", "", "Failed to load documentation: " + err.message)
+        el("p", "", "Failed to load documentation: " + (err && err.message ? err.message : String(err)))
       );
     }
 
-    document.getElementById("btn-copy-raw").addEventListener("click", async function (e) {
-      try {
-        await navigator.clipboard.writeText(rawText);
-        e.target.textContent = "Copied!";
-        setTimeout(function () {
-          e.target.textContent = "Copy Markdown";
-        }, 1200);
-      } catch (_err) {
-        e.target.textContent = "Copy failed";
-      }
+    document.getElementById("btn-copy-raw").addEventListener("click", function (e) {
+      copyToClipboard(rawText, e.target, "Copy Markdown");
     });
   }
 

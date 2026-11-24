@@ -1,0 +1,121 @@
+<!-- DO NOT EDIT DIRECTLY. Generated deterministically by scripts/build_docs_html.py -->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Testing &amp; Verification — Casper Documentation</title>
+  <link rel="icon" type="image/svg+xml" href="../brand/favicon.svg">
+  <link rel="icon" href="../brand/favicon.ico" sizes="any">
+  <link rel="apple-touch-icon" href="../brand/apple-touch-icon.png">
+  <link rel="stylesheet" href="../site.css">
+</head>
+<body>
+  <div class="grid-bg" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <a class="brand-link" href="../index.html">
+      <img src="../brand/casper-logo-dark.svg" alt="Casper — The Friendly Ghostwriter" class="brand-logo">
+    </a>
+    <nav class="nav-links" aria-label="Documentation navigation">
+      <a href="../index.html#docs">All Docs</a>
+      <a href="using.html">Using</a>
+      <a href="data-model.html">Data Model</a>
+      <a href="api-reference.html">API</a>
+      <a href="testing.html">Testing</a>
+      <a href="adr/README.html">ADRs</a>
+      <a class="btn-outline" href="https://github.com/bsommers/casper" target="_blank" rel="noopener">GitHub</a>
+    </nav>
+  </header>
+
+  <main class="container doc-container">
+    <div class="hud-card doc-toolbar">
+      <div class="doc-toolbar-left">
+        <a class="dl-link" href="../index.html#docs">&larr; Back to Hub</a>
+        <span class="tag">testing.md</span>
+      </div>
+      <div class="doc-toolbar-right">
+        <div class="pill-group" role="group" aria-label="Document view mode">
+          <span class="pill active" aria-current="page">Pre-Rendered HTML</span>
+          <a class="pill" href="../doc.html?file=testing.md">Dynamic JS Viewer</a>
+        </div>
+        <a class="dl-link" href="../testing.md" target="_blank" rel="noopener">View Raw .md</a>
+        <a class="dl-link" href="../testing.md" download="testing.md">Download .md</a>
+      </div>
+    </div>
+
+    <article class="hud-card markdown-body">
+      <nav class="doc-toc" aria-label="Table of contents">
+  <div class="doc-toc-title">On This Page</div>
+  <ul class="doc-toc-list">
+    <li class="toc-l2"><a href="#verification-gate-scriptsverifysh">Verification Gate (scripts/verify.sh)</a></li>
+    <li class="toc-l3"><a href="#coverage-thresholds">Coverage Thresholds</a></li>
+    <li class="toc-l2"><a href="#8-tier-test-layout-tests">8-Tier Test Layout (tests/)</a></li>
+    <li class="toc-l2"><a href="#offline-network-guard-pytestmarkloopback">Offline Network Guard &amp; @pytest.mark.loopback</a></li>
+    <li class="toc-l2"><a href="#fake-cli-writer-testsfakesfakeagentpy">Fake CLI Writer (tests/fakes/fake_agent.py)</a></li>
+    <li class="toc-l2"><a href="#golden-output-regeneration">Golden Output Regeneration</a></li>
+    <li class="toc-l2"><a href="#sync-hygiene-checks">Sync &amp; Hygiene Checks</a></li>
+  </ul>
+</nav>
+
+<h1 id="testing-verification">Testing &amp; Verification</h1>
+<p>Casper uses an 8-tier pytest suite orchestrated by <a href="../../scripts/verify.sh"><code>scripts/verify.sh</code></a>, paired with static quality checks and deterministic generator checks.</p>
+<h2 id="verification-gate-scriptsverifysh">Verification Gate (<code>scripts/verify.sh</code>)</h2>
+<p><code>scripts/verify.sh</code> emits a single summary line (<code>PASS ...</code> or <code>FAIL ...</code>) to stdout and writes per-stage logs, <code>summary.tsv</code>, <code>junit.xml</code>, and <code>report.md</code> into <code>target/verify/</code>.</p>
+<div class="code-block"><div class="code-block-head"><span class="code-lang">bash</span></div><pre><code class="language-bash"># Fast pre-commit gate: ruff, mypy, spec-sync, secret-scan, smoke, unit
+scripts/verify.sh --quick
+
+# Pre-milestone gate: specific test tiers
+scripts/verify.sh --tier smoke,unit,integration,system,security
+
+# Full pre-release gate: lint, mypy, spec-sync, secret-scan, all 8 tiers, coverage
+scripts/verify.sh
+
+# Additional modes
+scripts/verify.sh --only tests/unit/test_web_app.py
+scripts/verify.sh --match "golden" --tier integration
+scripts/verify.sh --failed
+scripts/verify.sh --status
+scripts/verify.sh --report</code></pre></div>
+<h3 id="coverage-thresholds">Coverage Thresholds</h3>
+<p>The full <code>scripts/verify.sh</code> gate runs <code>pytest tests --cov=src/casper --cov-branch</code> and enforces:</p>
+<ul>
+<li><strong>Line coverage:</strong> <code>&gt;= 90.00%</code></li>
+<li><strong>Branch coverage:</strong> <code>&gt;= 85.00%</code></li>
+</ul>
+<h2 id="8-tier-test-layout-tests">8-Tier Test Layout (<code>tests/</code>)</h2>
+<div class="table-wrap"><table><thead><tr><th>Tier</th><th>Directory</th><th>Scope</th></tr></thead><tbody><tr><td><code>smoke</code></td><td><code>tests/smoke/</code></td><td>Architecture rank DAG (<code>test_architecture.py</code>), ADR parity (<code>test_adr.py</code>), brand sync (<code>test_brand.py</code>), CLI boot (<code>test_cli_boot.py</code>), repo hygiene &amp; relative links (<code>test_hygiene.py</code>), spec sync (<code>test_spec.py</code>), verify gate (<code>test_verify_gate.py</code>)</td></tr><tr><td><code>unit</code></td><td><code>tests/unit/</code></td><td>Module-level tests for <code>catalog</code>, <code>conformance</code>, <code>errors</code>, <code>facts</code>, <code>layers</code>, <code>libraries</code>, <code>loaders</code>, <code>modalities</code>, <code>planner</code>, <code>profile</code>, <code>realizer</code>, <code>validator</code>, <code>web</code></td></tr><tr><td><code>integration</code></td><td><code>tests/integration/</code></td><td>Cross-module determinism (<code>test_determinism.py</code>), 11-combo golden matrix (<code>test_golden.py</code>), CLI backend integration (<code>test_llm.py</code>), Hypothesis property tests (<code>test_properties.py</code>)</td></tr><tr><td><code>system</code></td><td><code>tests/system/</code></td><td>End-to-end CLI (<code>test_cli_e2e.py</code>), surface parity (<code>test_surface_parity.py</code>), real-socket Web UI E2E (<code>test_web_e2e.py</code>)</td></tr><tr><td><code>security</code></td><td><code>tests/security/</code></td><td>Global constraints (<code>test_constraints.py</code>), zero-invention fidelity (<code>test_fidelity.py</code>), loader SSRF/traversal/zip-bomb guards (<code>test_loaders_security.py</code>), <code>.local.yaml</code> privacy (<code>test_privacy.py</code>), HTTP security headers/bounds (<code>test_web_security.py</code>)</td></tr><tr><td><code>perf</code></td><td><code>tests/perf/</code></td><td>Latency budgets (<code>test_latency_budgets.py</code>)</td></tr><tr><td><code>stress</code></td><td><code>tests/stress/</code></td><td>Realizer candidate/size bounds (<code>test_realizer_bounds.py</code>), web concurrency (<code>test_web_concurrency.py</code>)</td></tr><tr><td><code>torture</code></td><td><code>tests/torture/</code></td><td>Atomic save crash recovery (<code>test_atomic_save.py</code>), loader fault injection (<code>test_loader_faults.py</code>), web socket/protocol faults (<code>test_web_faults.py</code>)</td></tr></tbody></table></div>
+<h2 id="offline-network-guard-pytestmarkloopback">Offline Network Guard &amp; <code>@pytest.mark.loopback</code></h2>
+<p><a href="../../tests/conftest.py"><code>tests/conftest.py</code></a> installs an <code>autouse=True</code> fixture (<code>_offline_socket_guard</code>) that monkeypatches <code>socket.socket.connect</code>, <code>socket.socket.connect_ex</code>, and <code>socket.create_connection</code> to raise <code>RuntimeError</code> on any outbound network attempt (<code>AF_UNIX</code> remains allowed).</p>
+<p>Real-socket end-to-end tests against <code>127.0.0.1</code> / <code>::1</code> / <code>localhost</code> must opt in explicitly with <code>@pytest.mark.loopback</code>.</p>
+<h2 id="fake-cli-writer-testsfakesfakeagentpy">Fake CLI Writer (<code>tests/fakes/fake_agent.py</code>)</h2>
+<p><a href="../../tests/fakes/fake_agent.py"><code>tests/fakes/fake_agent.py</code></a> is an offline test double for <code>claude</code> and <code>agy</code> driven by <code>CASPER_FAKE_MODE</code> across <strong>9 modes</strong>:</p>
+<div class="table-wrap"><table><thead><tr><th><code>CASPER_FAKE_MODE</code></th><th>Behavior</th></tr></thead><tbody><tr><td><code>good</code></td><td>Emits valid grounded sentences citing each <code>[fNNN]</code> fact ID</td></tr><tr><td><code>reword</code></td><td>Applies benign lexical rewording while keeping polarity and citations</td></tr><tr><td><code>invent</code></td><td>Injects an ungrounded metric (<code>$999,999</code>) to trigger validator rejection</td></tr><tr><td><code>rename</code></td><td>Injects an ungrounded proper noun (<code>ZorgCorp</code>) to trigger validator rejection</td></tr><tr><td><code>polarity</code></td><td>Inverts sentence polarity (<code>on track</code> → <code>blocked</code>)</td></tr><tr><td><code>uncited</code></td><td>Omits <code>[fNNN]</code> citation on the first sentence</td></tr><tr><td><code>empty</code></td><td>Outputs whitespace only</td></tr><tr><td><code>fail</code></td><td>Exits non-zero (<code>1</code>) simulating auth/CLI failure</td></tr><tr><td><code>hang</code></td><td>Sleeps for <code>CASPER_FAKE_SLEEP</code> seconds (default <code>5.0</code>) to exercise timeouts</td></tr></tbody></table></div>
+<p>Set <code>CASPER_FAKE_DUMP_PROMPT=&lt;path&gt;</code> to inspect the exact prompt passed to the CLI writer (e.g., to verify private <code>.local.yaml</code> data is absent).</p>
+<h2 id="golden-output-regeneration">Golden Output Regeneration</h2>
+<p><a href="../../tests/integration/test_golden.py"><code>tests/integration/test_golden.py</code></a> compares all 11 valid <code>structure × modality</code> pairs against <a href="../../tests/golden"><code>tests/golden/</code></a>. After intentional output changes, regenerate golden snapshots with:</p>
+<div class="code-block"><div class="code-block-head"><span class="code-lang">bash</span></div><pre><code class="language-bash">CASPER_UPDATE_GOLDEN=1 .venv/bin/pytest tests/integration/test_golden.py -q</code></pre></div>
+<h2 id="sync-hygiene-checks">Sync &amp; Hygiene Checks</h2>
+<p>Run these deterministic drift and hygiene checks whenever editing specs, brand generators, examples, or docs:</p>
+<div class="code-block"><div class="code-block-head"><span class="code-lang">bash</span></div><pre><code class="language-bash"># Spec compilation sync (spec/0[0-9]-*.md -&gt; SPEC.md)
+.venv/bin/python scripts/build_spec.py --check
+
+# Brand asset sync (docs/brand/ + src/casper/web/static/img/)
+.venv/bin/python scripts/build_brand.py --check
+
+# Worked examples sync (examples/edge-migration-status.md -&gt; examples/outputs/)
+.venv/bin/python scripts/build_examples.py --check
+
+# Secret &amp; machine-specific path scan
+bash scripts/scan_secrets_and_paths.sh</code></pre></div>
+    </article>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <img src="../brand/casper-mark.svg" alt="Casper Ghost Mark" class="footer-mark">
+      <span>Casper Documentation · Pre-Rendered Static HTML · Local-First · MIT License</span>
+    </div>
+  </footer>
+</body>
+</html>

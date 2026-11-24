@@ -1,0 +1,61 @@
+<!-- DO NOT EDIT DIRECTLY. Generated deterministically by scripts/build_docs_html.py -->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Architecture Decision Records (ADRs) — Casper Documentation</title>
+  <link rel="icon" type="image/svg+xml" href="../../brand/favicon.svg">
+  <link rel="icon" href="../../brand/favicon.ico" sizes="any">
+  <link rel="apple-touch-icon" href="../../brand/apple-touch-icon.png">
+  <link rel="stylesheet" href="../../site.css">
+</head>
+<body>
+  <div class="grid-bg" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <a class="brand-link" href="../../index.html">
+      <img src="../../brand/casper-logo-dark.svg" alt="Casper — The Friendly Ghostwriter" class="brand-logo">
+    </a>
+    <nav class="nav-links" aria-label="Documentation navigation">
+      <a href="../../index.html#docs">All Docs</a>
+      <a href="../using.html">Using</a>
+      <a href="../data-model.html">Data Model</a>
+      <a href="../api-reference.html">API</a>
+      <a href="../testing.html">Testing</a>
+      <a href="../adr/README.html">ADRs</a>
+      <a class="btn-outline" href="https://github.com/bsommers/casper" target="_blank" rel="noopener">GitHub</a>
+    </nav>
+  </header>
+
+  <main class="container doc-container">
+    <div class="hud-card doc-toolbar">
+      <div class="doc-toolbar-left">
+        <a class="dl-link" href="../../index.html#docs">&larr; Back to Hub</a>
+        <span class="tag">adr/README.md</span>
+      </div>
+      <div class="doc-toolbar-right">
+        <div class="pill-group" role="group" aria-label="Document view mode">
+          <span class="pill active" aria-current="page">Pre-Rendered HTML</span>
+          <a class="pill" href="../../doc.html?file=adr/README.md">Dynamic JS Viewer</a>
+        </div>
+        <a class="dl-link" href="../../adr/README.md" target="_blank" rel="noopener">View Raw .md</a>
+        <a class="dl-link" href="../../adr/README.md" download="adr-README.md">Download .md</a>
+      </div>
+    </div>
+
+    <article class="hud-card markdown-body">
+<h1 id="architecture-decision-records-adrs">Architecture Decision Records (ADRs)</h1>
+<p>ADRs are append-only and verified for index parity by <code>tests/smoke/test_adr.py</code> (<code>TC-003</code>).</p>
+<div class="table-wrap"><table><thead><tr><th>ADR</th><th>Title</th><th>Status</th><th>Enforced By</th></tr></thead><tbody><tr><td><a href="0001-no-in-process-llm.html">0001</a></td><td>No In-Process LLM or Hugging Face; Deterministic Rule-Based Realization Default</td><td>accepted</td><td><code>tests/security/test_constraints.py</code></td></tr><tr><td><a href="0002-one-yaml-per-author.html">0002</a></td><td>Author Profiles Stored as One YAML File per Author in authors/</td><td>accepted</td><td><code>tests/unit/test_profile.py</code></td></tr><tr><td><a href="0003-deterministic-root-spec.html">0003</a></td><td>Root SPEC.md Deterministically Generated from spec/0[0-9]-*.md</td><td>accepted</td><td><code>tests/smoke/test_spec.py</code></td></tr><tr><td><a href="0004-gitignore-input-output.html">0004</a></td><td>input/ and output/ Git-Ignored with README.md Placeholders</td><td>accepted</td><td><code>.gitignore</code> and <code>tests/smoke/test_hygiene.py</code></td></tr><tr><td><a href="0005-three-layer-author-profiles.html">0005</a></td><td>Three-Layer Author Profiles with Mode 0600 Local Layer and Tamper Guard</td><td>accepted</td><td><code>tests/unit/test_layers.py</code>, <code>tests/security/test_privacy.py</code></td></tr><tr><td><a href="0006-profile-relative-voice-score.html">0006</a></td><td>Profile-Relative Deterministic 32-Feature Voice Conformance Score</td><td>accepted</td><td><code>tests/unit/test_conformance.py</code></td></tr><tr><td><a href="0007-catalog-relative-voice-scoring.html">0007</a></td><td>Catalog-Relative Voice Scoring Deferred Until &gt;=3 Distinct Authors</td><td>proposed</td><td>Deferred until catalog has &gt;=3 distinct authors in <code>authors/</code></td></tr><tr><td><a href="0008-v1-library-scope.html">0008</a></td><td>v1 Library Scope: 10 Personas, 3 Structures, 5 Modalities, 1 Default Glossary</td><td>accepted</td><td><code>tests/unit/test_libraries.py</code></td></tr><tr><td><a href="0009-fact-cited-candidates.html">0009</a></td><td>Every Non-Frame Sentence Cites Facts; Candidate Variants Ranked by Voice Score</td><td>accepted</td><td><code>tests/unit/test_realizer.py</code>, <code>tests/unit/test_validator.py</code></td></tr><tr><td><a href="0010-optional-cli-writers.html">0010</a></td><td>Optional Claude and Antigravity CLI Writers Behind Explicit Opt-In and Fallback</td><td>accepted</td><td><code>tests/integration/test_llm.py</code></td></tr><tr><td><a href="0011-localhost-stdlib-web-ui.html">0011</a></td><td>Localhost-Only Python Stdlib ThreadingHTTPServer and Frameworkless Static UI</td><td>accepted</td><td><code>tests/security/test_web_security.py</code>, <code>tests/system/test_web_e2e.py</code></td></tr><tr><td><a href="0012-shared-rewrites-fidelity-brand.html">0012</a></td><td>Shared rewrites.py Registry, Tightened Ask Cues, Dual FidelityMode &amp; Ghost Brand Kit</td><td>accepted</td><td><code>tests/unit/test_facts.py</code>, <code>tests/unit/test_realizer.py</code>, <code>tests/unit/test_validator.py</code>, <code>tests/smoke/test_brand.py</code></td></tr></tbody></table></div>
+    </article>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <img src="../../brand/casper-mark.svg" alt="Casper Ghost Mark" class="footer-mark">
+      <span>Casper Documentation · Pre-Rendered Static HTML · Local-First · MIT License</span>
+    </div>
+  </footer>
+</body>
+</html>
