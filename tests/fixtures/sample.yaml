@@ -1,0 +1,6 @@
+title: Q4 Platform Update
+status: On track for November release
+owner: Elena Park
+risks:
+  - Legacy client timeouts under peak load
+next_step: Run full failover drill on 2026-11-28

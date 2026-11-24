@@ -1,0 +1,54 @@
+id: technical_article
+goal: Explain a technical topic with context, findings, decisions, and takeaways.
+compatible_modalities:
+- article
+- memo
+- plain
+default_target_personas:
+- engineering
+- customer
+sections:
+- name: summary
+  heading: Overview
+  purpose: Context and headline state
+  required: true
+  fact_kinds:
+  - background
+  - status
+  min_words: 10
+  max_words: 300
+- name: details
+  heading: Technical Details
+  purpose: Architecture, progress, and measurements
+  required: true
+  fact_kinds:
+  - detail
+  - progress
+  - metric
+  min_words: 15
+  max_words: 1200
+- name: decisions
+  heading: Key Decisions
+  purpose: Design choices and rationale
+  required: false
+  fact_kinds:
+  - decision
+  min_words: 0
+  max_words: 400
+- name: risks
+  heading: Limitations & Risks
+  purpose: Known constraints and risks
+  required: false
+  fact_kinds:
+  - risk
+  min_words: 0
+  max_words: 350
+- name: next_steps
+  heading: What Comes Next
+  purpose: Planned work and reader calls to action
+  required: false
+  fact_kinds:
+  - next_step
+  - ask
+  min_words: 0
+  max_words: 250

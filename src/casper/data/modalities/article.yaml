@@ -1,0 +1,8 @@
+id: article
+markup: html
+max_words: 2500
+max_chars: 20000
+title: true
+headings: h2
+bullets: false
+description: Long-form HTML technical article

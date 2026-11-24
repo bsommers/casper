@@ -1,0 +1,31 @@
+id: project_manager
+kind: source
+priorities:
+- schedule
+- dependencies
+- blockers
+- ownership
+vocabulary_include:
+- schedule
+- owner
+- target
+- blocker
+vocabulary_avoid:
+- refactor
+detail_depth: medium
+jargon_level: low
+framing_patterns:
+- status_first
+typical_concerns:
+- slip
+- dependency
+- staffing
+cta_styles:
+- approval
+- direct
+- alignment
+section_priority:
+- status
+- risks
+- next_steps
+- asks

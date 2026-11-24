@@ -1,0 +1,32 @@
+id: product_owner
+kind: source
+priorities:
+- outcomes
+- timeline
+- customer
+- adoption
+vocabulary_include:
+- release
+- customer
+- value
+- milestone
+vocabulary_avoid:
+- refactor
+- boilerplate
+detail_depth: medium
+jargon_level: low
+framing_patterns:
+- outcome_first
+typical_concerns:
+- delay
+- churn
+- scope
+cta_styles:
+- approval
+- alignment
+- feedback
+section_priority:
+- status
+- decisions
+- next_steps
+- risks

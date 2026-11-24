@@ -1,0 +1,9 @@
+Legacy TLS 1.1 clients represent 1.4% of requests and remain blocked on certificate rotation.
+
+Finish final cluster cutover on 2026-11-24 after validating fallback routing.
+
+Edge cache migration is on track at 82% traffic cutover.
+
+Recommended keeping dual-stack origin fallback enabled through December 15.
+
+Completed canary rollout across 12 regional clusters with p99 response time dropping from 48ms to 29ms.

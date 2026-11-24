@@ -1,0 +1,35 @@
+# Python & environments
+.venv/
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.hypothesis/
+.coverage
+.coverage.*
+coverage.xml
+htmlcov/
+
+# Local build, verification & runtime artifacts
+target/
+raw_inputs/
+
+# Local input/output sandboxes (ADR 0004)
+input/*
+!input/README.md
+output/*
+!output/README.md
+
+# Private author layer (ADR 0005)
+authors/*.local.yaml
+
+# Temporary & backup files
+*.bak
+*.tmp
+*.tmp.*
+.DS_Store

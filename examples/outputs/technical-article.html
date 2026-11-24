@@ -1,0 +1,14 @@
+<article>
+<h1>Technical Article</h1>
+<h2>Technical Details</h2>
+<p>The owner is Priya Nair. Completed canary rollout across 14 regional clusters with p99 latency dropping from 49ms to 27ms. Automated telemetry dashboards now report cache hit ratios and origin fallback errors every minute. Cache hit ratio improved by +6.8% to 94.6% with $19,200 monthly egress savings.</p>
+<h2>Limitations &amp; Risks</h2>
+<p>Legacy TLS 1.1 clients account for 1.2% of requests and remain blocked on client certificate rotation. Origin failover drill uncovered a 4-second spike in connection retries during cold restarts.</p>
+<h2>What Comes Next</h2>
+<p>Finish final cluster cutover on 2026-11-25 after validating dual-stack rollback routing; publish the updated runbook for on-call responders before the holiday freeze. Please approve the maintenance window on 2026-11-25 so the team can finish cutover.</p>
+<h2>Overview</h2>
+<p>Edge cache migration is on track at 84% global traffic cutover. The migration replaces aging proxy nodes with unified edge workers to simplify routing and cut tail latency.</p>
+<h2>Key Decisions</h2>
+<p>Recommended keeping dual-stack origin fallback enabled through December 15 to protect legacy callers.</p>
+<p>Let me know if you spot any gaps.</p>
+</article>

@@ -1,0 +1,29 @@
+id: analyst
+kind: source
+priorities:
+- metrics
+- baseline
+- trend
+- variance
+vocabulary_include:
+- baseline
+- cohort
+- rate
+- delta
+vocabulary_avoid:
+- anecdotal
+detail_depth: high
+jargon_level: medium
+framing_patterns:
+- metric_first
+typical_concerns:
+- sample
+- bias
+- anomaly
+cta_styles:
+- feedback
+- decision
+section_priority:
+- evidence
+- recommendation
+- risks

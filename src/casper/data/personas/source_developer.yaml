@@ -1,0 +1,29 @@
+id: developer
+kind: source
+priorities:
+- reliability
+- latency
+- testing
+- deployment
+vocabulary_include:
+- build
+- deploy
+- benchmark
+- patch
+vocabulary_avoid:
+- synergy
+detail_depth: high
+jargon_level: high
+framing_patterns:
+- evidence_first
+typical_concerns:
+- regression
+- blocker
+- debt
+cta_styles:
+- technical_review
+- direct
+section_priority:
+- progress
+- risks
+- next_steps

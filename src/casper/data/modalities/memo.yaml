@@ -1,0 +1,8 @@
+id: memo
+markup: markdown
+max_words: 800
+max_chars: 6000
+title: true
+headings: h2
+bullets: true
+description: Structured internal Markdown memo

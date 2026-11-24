@@ -1,0 +1,8 @@
+id: slack
+markup: slack
+max_words: 180
+max_chars: 1200
+title: false
+headings: slack_bold
+bullets: true
+description: Short Slack channel update

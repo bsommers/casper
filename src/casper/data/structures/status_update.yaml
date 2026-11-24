@@ -1,0 +1,52 @@
+id: status_update
+goal: Communicate current state, progress, blockers, and immediate actions.
+compatible_modalities:
+- slack
+- email
+- memo
+- plain
+default_target_personas:
+- management
+- product_owner
+sections:
+- name: status
+  heading: Status
+  purpose: Current health and headline metrics
+  required: true
+  fact_kinds:
+  - status
+  - metric
+  min_words: 5
+  max_words: 80
+- name: progress
+  heading: Progress
+  purpose: Completed work since last update
+  required: false
+  fact_kinds:
+  - progress
+  min_words: 0
+  max_words: 120
+- name: risks
+  heading: Risks & Blockers
+  purpose: Active blockers or risks
+  required: false
+  fact_kinds:
+  - risk
+  min_words: 0
+  max_words: 100
+- name: next_steps
+  heading: Next Steps
+  purpose: Immediate planned actions
+  required: false
+  fact_kinds:
+  - next_step
+  min_words: 0
+  max_words: 100
+- name: asks
+  heading: Asks
+  purpose: Decisions or approvals needed
+  required: false
+  fact_kinds:
+  - ask
+  min_words: 0
+  max_words: 80

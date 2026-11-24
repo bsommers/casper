@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Casper Multi-Modality Formatter">
+  <title>Casper Multi-Modality Formatter</title>
+  <rect x="3" y="3" width="58" height="58" rx="14" fill="#131B2E" stroke="#38BDF8" stroke-width="2.2"/>
+  <rect x="20" y="13" width="30" height="32" rx="5" fill="#1E293B" stroke="#38BDF8" stroke-width="2.2"/>
+  <rect x="14" y="19" width="30" height="32" rx="5" fill="#F8FAFC" stroke="#0F172A" stroke-width="2.4"/>
+  <path d="M 24,29 L 20,34 L 24,39" fill="none" stroke="#0284C7" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 34,29 L 38,34 L 34,39" fill="none" stroke="#0284C7" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+  <line x1="21" y1="45" x2="37" y2="45" stroke="#FDA4AF" stroke-width="2.8" stroke-linecap="round"/>
+  <circle cx="46" cy="16" r="2.8" fill="#FBBF24"/>
+</svg>

@@ -1,0 +1,32 @@
+id: customer
+kind: target
+priorities:
+- benefit
+- reliability
+- usability
+- schedule
+vocabulary_include:
+- update
+- improvement
+- reliability
+- support
+vocabulary_avoid:
+- internal
+- ticket
+- sprint
+- refactor
+detail_depth: low
+jargon_level: low
+framing_patterns:
+- benefit_first
+typical_concerns:
+- downtime
+- breaking
+- migration
+cta_styles:
+- feedback
+- next_step
+section_priority:
+- summary
+- progress
+- next_steps

@@ -1,0 +1,24 @@
+plain:
+  latency: response time
+  throughput: capacity
+  idempotent: safe to repeat
+  regression: unexpected breakage
+  deprecation: planned removal
+  telemetry: usage metrics
+  concurrency: parallel work
+  endpoint: service address
+  schema: data format
+  rollback: undo change
+preferred:
+  utilize: use
+  leverage: use
+  in order to: to
+  prior to: before
+  at this point in time: now
+  due to the fact that: because
+banned:
+- synergy
+- disruptive
+- bleeding-edge
+- game-changer
+- rockstar

@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Casper — The Friendly Ghostwriter</title>
+  <link rel="icon" type="image/svg+xml" href="/static/img/favicon.svg">
+  <link rel="icon" href="/static/img/favicon.ico" sizes="any">
+  <link rel="apple-touch-icon" href="/static/img/apple-touch-icon.png">
+  <link rel="stylesheet" href="/static/theme.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <img src="/static/img/casper-logo-light.svg" alt="Casper — The Friendly Ghostwriter" class="brand-logo">
+      <span class="badge-local">Localhost only</span>
+    </div>
+    <nav class="tabs" role="tablist" aria-label="Casper views">
+      <button type="button" class="tab active" data-tab="write" role="tab" aria-selected="true">Write</button>
+      <button type="button" class="tab" data-tab="score" role="tab" aria-selected="false">Check a draft</button>
+      <button type="button" class="tab" data-tab="about" role="tab" aria-selected="false">About</button>
+    </nav>
+  </header>
+
+  <main class="container">
+    <div id="global-error" class="banner error hidden" role="alert"></div>
+
+    <!-- WRITE TAB -->
+    <section id="tab-write" class="panel" role="tabpanel">
+      <div class="grid-two">
+        <div class="card">
+          <h2>Brief &amp; Source Notes</h2>
+          <div class="form-grid">
+            <label>
+              <span>Structure</span>
+              <select id="w-structure"></select>
+            </label>
+            <label>
+              <span>Modality</span>
+              <select id="w-modality"></select>
+            </label>
+            <label>
+              <span>Source Persona</span>
+              <select id="w-source"></select>
+            </label>
+            <label>
+              <span>Target Persona</span>
+              <select id="w-target"></select>
+            </label>
+            <label>
+              <span>Author Voice (optional)</span>
+              <select id="w-author"></select>
+            </label>
+            <label>
+              <span>Writer Backend</span>
+              <select id="w-backend"></select>
+            </label>
+            <label>
+              <span>Topic / Title (optional)</span>
+              <input id="w-topic" type="text" placeholder="e.g. Edge Cache Migration">
+            </label>
+            <label>
+              <span>Seed</span>
+              <input id="w-seed" type="number" value="0" min="0" step="1">
+            </label>
+          </div>
+
+          <div class="backend-badges" id="backend-badges" aria-label="Backend readiness"></div>
+
+          <label class="disabled-field">
+            <span>API Token (disabled — Casper runs locally)</span>
+            <input id="w-token" type="password" disabled placeholder="Not required; Casper never uses API tokens">
+          </label>
+
+          <label class="notes-field">
+            <span>Source Notes</span>
+            <textarea id="w-notes" rows="10" placeholder="Status: Rollout is on track at 95%.&#10;Progress: Completed staging validation.&#10;Risk: Legacy clients remain on TLS 1.1.&#10;Ask: Please approve the production window."></textarea>
+          </label>
+
+          <div class="actions">
+            <button type="button" id="btn-extract" class="btn secondary">Inspect Facts</button>
+            <button type="button" id="btn-generate" class="btn primary">Generate</button>
+          </div>
+
+          <div id="facts-inspector" class="inspector hidden">
+            <h3>Extracted Facts &amp; Kind Overrides</h3>
+            <p class="hint">Adjust any fact's kind before generating; overrides are applied automatically.</p>
+            <div id="facts-list" class="facts-list"></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="result-header">
+            <h2>Output</h2>
+            <div class="result-actions">
+              <button type="button" id="btn-copy" class="btn small secondary" disabled>Copy</button>
+              <button type="button" id="btn-download" class="btn small secondary" disabled>Download</button>
+            </div>
+          </div>
+
+          <div id="result-chips" class="chips"></div>
+
+          <div class="subtabs" role="tablist" aria-label="Output views">
+            <button type="button" class="subtab active" data-view="draft">Draft</button>
+            <button type="button" class="subtab" data-view="provenance">Where each sentence came from</button>
+            <button type="button" class="subtab" data-view="checks">Checks</button>
+          </div>
+
+          <div id="view-draft" class="result-view">
+            <pre id="draft-output" class="draft-pre">Generated draft will appear here.</pre>
+          </div>
+          <div id="view-provenance" class="result-view hidden">
+            <div id="provenance-list" class="provenance-list"></div>
+          </div>
+          <div id="view-checks" class="result-view hidden">
+            <div id="checks-list" class="checks-list"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CHECK A DRAFT TAB -->
+    <section id="tab-score" class="panel hidden" role="tabpanel">
+      <div class="card">
+        <h2>Check a Draft Against an Author Voice</h2>
+        <div class="form-grid">
+          <label>
+            <span>Author</span>
+            <select id="s-author"></select>
+          </label>
+          <label>
+            <span>Modality Overlay (optional)</span>
+            <select id="s-overlay"></select>
+          </label>
+          <label class="checkbox-label">
+            <input id="s-raw" type="checkbox">
+            <span>Score against raw generated profile only</span>
+          </label>
+        </div>
+        <label class="notes-field">
+          <span>Draft Text</span>
+          <textarea id="s-text" rows="10" placeholder="Paste draft prose to score against the selected author's measured voice..."></textarea>
+        </label>
+        <div class="actions">
+          <button type="button" id="btn-score" class="btn primary">Score</button>
+        </div>
+        <div id="score-result" class="score-result hidden">
+          <div id="score-chips" class="chips"></div>
+          <h3>Dimensions</h3>
+          <div id="score-dimensions" class="dims-list"></div>
+          <h3>Largest Gaps</h3>
+          <div id="score-gaps" class="gaps-list"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT TAB -->
+    <section id="tab-about" class="panel hidden" role="tabpanel">
+      <div class="card about-card">
+        <img src="/static/img/casper-mark.svg" alt="Casper Ghost Mark" class="about-mark">
+        <div>
+          <h2>Casper — The Friendly Ghostwriter</h2>
+          <p>
+            Casper transforms unstructured source notes into audience-adapted, format-compliant
+            drafts grounded strictly in explicit source facts. By default everything runs 100% locally
+            and deterministically with zero external network calls.
+          </p>
+          <ul class="about-list">
+            <li><strong>Zero invention:</strong> Every non-closing sentence cites one or more verified source fact IDs.</li>
+            <li><strong>Local privacy:</strong> Private author metadata lives only in mode-0600 <code>.local.yaml</code> files and never leaves your machine.</li>
+            <li><strong>Localhost-only server:</strong> Bound strictly to <code>127.0.0.1</code> with Host, Origin, Sec-Fetch-Site, and CSP protections.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Casper CLI Writer">
+  <title>Casper CLI Writer</title>
+  <rect x="3" y="3" width="58" height="58" rx="14" fill="#131B2E" stroke="#38BDF8" stroke-width="2.2"/>
+  <rect x="12" y="15" width="40" height="34" rx="6" fill="#0B0F1A" stroke="#F8FAFC" stroke-width="2.4"/>
+  <path d="M 19,27 L 26,32 L 19,37" fill="none" stroke="#38BDF8" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+  <line x1="29" y1="37" x2="37" y2="37" stroke="#F8FAFC" stroke-width="2.8" stroke-linecap="round"/>
+  <path d="M 39,29 L 51,17" stroke="#38BDF8" stroke-width="3.6" stroke-linecap="round"/>
+  <circle cx="38" cy="30" r="3" fill="#FBBF24"/>
+</svg>

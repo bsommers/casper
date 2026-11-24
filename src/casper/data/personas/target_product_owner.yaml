@@ -1,0 +1,32 @@
+id: product_owner
+kind: target
+priorities:
+- scope
+- release
+- customer
+- feedback
+vocabulary_include:
+- release
+- feature
+- customer
+- readiness
+vocabulary_avoid:
+- syscall
+- mutex
+detail_depth: medium
+jargon_level: low
+framing_patterns:
+- release_readiness
+typical_concerns:
+- scope
+- readiness
+- blocker
+cta_styles:
+- alignment
+- approval
+- feedback
+section_priority:
+- status
+- progress
+- risks
+- asks

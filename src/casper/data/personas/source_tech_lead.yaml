@@ -1,0 +1,31 @@
+id: tech_lead
+kind: source
+priorities:
+- architecture
+- trade-offs
+- risk
+- delivery
+vocabulary_include:
+- milestone
+- interface
+- design
+- migration
+vocabulary_avoid:
+- synergy
+detail_depth: high
+jargon_level: medium
+framing_patterns:
+- tradeoff_summary
+typical_concerns:
+- coupling
+- outage
+- scope
+cta_styles:
+- decision
+- alignment
+- direct
+section_priority:
+- status
+- risks
+- decisions
+- next_steps

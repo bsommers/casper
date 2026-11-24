@@ -1,0 +1,21 @@
+approval:
+- Please let me know if you approve.
+- Please confirm if we are approved to proceed.
+alignment:
+- Please share any concerns so we can stay aligned.
+- Let me know if this matches your expectations.
+decision:
+- Please confirm which option you want to take.
+- Let me know your decision when ready.
+direct:
+- Please reply with your answer.
+- Let me know how you want to proceed.
+feedback:
+- Please share your feedback when convenient.
+- Let me know what you think.
+next_step:
+- Please reach out if you have any questions.
+- Let us know if you need help with the next step.
+technical_review:
+- Please review the details and flag any technical issues.
+- Let me know if you spot any gaps.

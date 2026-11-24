@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Casper Fidelity Validator">
+  <title>Casper Fidelity Validator</title>
+  <rect x="3" y="3" width="58" height="58" rx="14" fill="#131B2E" stroke="#38BDF8" stroke-width="2.2"/>
+  <path d="M 32,12 L 49,18 L 49,33 C 49,44 41,50 32,53 C 23,50 15,44 15,33 L 15,18 Z" fill="#F8FAFC" stroke="#0F172A" stroke-width="2.6" stroke-linejoin="round"/>
+  <path d="M 24,33 L 30,39 L 41,25" fill="none" stroke="#0284C7" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="49" cy="14" r="3.2" fill="#FBBF24"/>
+</svg>

@@ -1,0 +1,8 @@
+id: plain
+markup: plain
+max_words: 200
+max_chars: 1400
+title: false
+headings: none
+bullets: false
+description: Unformatted plain-text summary

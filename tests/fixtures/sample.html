@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Measuring Tail Latency</title>
+  <meta name="author" content="Samira Chen">
+  <meta name="description" content="How we measure tail latency in production.">
+  <meta property="article:published_time" content="2026-10-01">
+  <link rel="canonical" href="https://example.org/tail-latency">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Measuring Tail Latency at Scale",
+    "author": {"@type": "Person", "name": "Samira Chen"},
+    "datePublished": "2026-10-01",
+    "dateModified": "2026-10-05"
+  }
+  </script>
+</head>
+<body>
+  <nav><a href="/">Home</a></nav>
+  <article>
+    <h1>Measuring Tail Latency at Scale</h1>
+    <aside><p>Short aside summary that should be excluded from voice stats.</p></aside>
+    <h2>Summary</h2>
+    <p>This summary block must be tagged SUMMARY and excluded from voice analysis.</p>
+    <h2>Audience</h2>
+    <p>Engineers operating distributed services.</p>
+    <h2>Why averages mislead</h2>
+    <p><strong>Averages hide outliers.</strong> When you measure p50 alone, you miss the slowest requests that users actually feel. We track p99 latency across every <a href="https://example.org/region">region</a>.</p>
+    <ul>
+      <li><strong>Measure end to end:</strong> capture client-visible timing.</li>
+      <li>Keep histograms bounded so memory stays predictable.</li>
+    </ul>
+    <blockquote>Latency bugs rarely announce themselves — they hide in the tail.</blockquote>
+    <pre><code>p99 = quantile(samples, 0.99)</code></pre>
+    <h2>Resources</h2>
+    <p>See the latency handbook for further reading.</p>
+  </article>
+  <footer>Copyright 2026 Example</footer>
+</body>
+</html>

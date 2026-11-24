@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Casper Favicon">
+  <title>Casper Favicon</title>
+  <defs>
+    <radialGradient id="fav-body" cx="38%" cy="30%" r="72%">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="65%" stop-color="#F8FAFC"/>
+      <stop offset="100%" stop-color="#E0F2FE"/>
+    </radialGradient>
+  </defs>
+  <rect x="2" y="2" width="60" height="60" rx="15" fill="#0B0F1A" stroke="#38BDF8" stroke-width="2.4"/>
+  <path d="M 32,11 C 20,11 13,19 13,31 L 13,47 C 13,53 20,54 24,49 C 27,54 37,54 40,49 C 44,54 51,53 51,47 L 51,31 C 51,19 44,11 32,11 Z" fill="url(#fav-body)" stroke="#0F172A" stroke-width="2.6" stroke-linejoin="round"/>
+  <ellipse cx="20" cy="35" rx="3.4" ry="2.1" fill="#FDA4AF"/>
+  <ellipse cx="44" cy="35" rx="3.4" ry="2.1" fill="#FDA4AF"/>
+  <ellipse cx="25" cy="29.5" rx="3.4" ry="4.2" fill="#0F172A"/>
+  <circle cx="23.8" cy="27.8" r="1.4" fill="#FFFFFF"/>
+  <ellipse cx="39" cy="29.5" rx="3.4" ry="4.2" fill="#0F172A"/>
+  <circle cx="37.8" cy="27.8" r="1.4" fill="#FFFFFF"/>
+  <path d="M 28.5,35.5 C 30,39 34,39 35.5,35.5" fill="none" stroke="#0F172A" stroke-width="2.4" stroke-linecap="round"/>
+  <path d="M 46,18 L 54,10" stroke="#38BDF8" stroke-width="3.2" stroke-linecap="round"/>
+  <circle cx="53" cy="21" r="2.6" fill="#FBBF24"/>
+</svg>

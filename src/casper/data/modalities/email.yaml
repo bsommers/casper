@@ -1,0 +1,8 @@
+id: email
+markup: markdown
+max_words: 350
+max_chars: 2500
+title: true
+headings: bold
+bullets: true
+description: Concise email update

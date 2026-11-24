@@ -1,0 +1,31 @@
+id: engineering
+kind: target
+priorities:
+- design
+- performance
+- correctness
+- rollout
+vocabulary_include:
+- latency
+- interface
+- rollout
+- test
+vocabulary_avoid:
+- synergy
+- leverage
+detail_depth: high
+jargon_level: high
+framing_patterns:
+- technical_detail
+typical_concerns:
+- regression
+- bottleneck
+- edge
+cta_styles:
+- technical_review
+- direct
+section_priority:
+- context
+- details
+- risks
+- next_steps

@@ -1,0 +1,32 @@
+id: management
+kind: target
+priorities:
+- schedule
+- risk
+- budget
+- impact
+vocabulary_include:
+- timeline
+- impact
+- owner
+- risk
+vocabulary_avoid:
+- mutex
+- syscall
+- refactor
+detail_depth: low
+jargon_level: low
+framing_patterns:
+- bottom_line_up_front
+typical_concerns:
+- delay
+- escalation
+- cost
+cta_styles:
+- approval
+- direct
+section_priority:
+- status
+- risks
+- asks
+- next_steps

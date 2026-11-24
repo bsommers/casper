@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080" role="img" aria-label="Casper Wallpaper Dark 1920x1080">
+  <title>Casper Wallpaper Dark 1920x1080</title>
+  <defs>
+    <linearGradient id="wpd1920x1080-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0B0F1A"/>
+      <stop offset="100%" stop-color="#131B2E"/>
+    </linearGradient>
+    <radialGradient id="wpd1920x1080-aura" cx="50%" cy="46%" r="36%">
+      <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.24"/>
+      <stop offset="60%" stop-color="#38BDF8" stop-opacity="0.04"/>
+      <stop offset="100%" stop-color="#38BDF8" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="wpd1920x1080-grid" width="64" height="64" patternUnits="userSpaceOnUse">
+      <path d="M 64 0 L 0 0 0 64" fill="none" stroke="#38BDF8" stroke-width="1" opacity="0.09"/>
+    </pattern>
+    <radialGradient id="wpd1920x1080-body-grad" cx="38%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="52%" stop-color="#F8FAFC"/>
+      <stop offset="86%" stop-color="#E0F2FE"/>
+      <stop offset="100%" stop-color="#BAE6FD"/>
+    </radialGradient>
+    <linearGradient id="wpd1920x1080-pen-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8"/>
+      <stop offset="55%" stop-color="#0EA5E9"/>
+      <stop offset="100%" stop-color="#0284C7"/>
+    </linearGradient>
+    <linearGradient id="wpd1920x1080-nib-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FDE68A"/>
+      <stop offset="55%" stop-color="#FBBF24"/>
+      <stop offset="100%" stop-color="#D97706"/>
+    </linearGradient>
+    <filter id="wpd1920x1080-glow" x="-25%" y="-25%" width="150%" height="150%">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <rect width="1920" height="1080" fill="url(#wpd1920x1080-bg)"/>
+  <rect width="1920" height="1080" fill="url(#wpd1920x1080-grid)"/>
+  <rect width="1920" height="1080" fill="url(#wpd1920x1080-aura)"/>
+  <circle cx="960.0" cy="496.8" r="280.8" fill="none" stroke="#38BDF8" stroke-width="1.5" stroke-dasharray="8 12" opacity="0.18"/>
+  <circle cx="960.0" cy="496.8" r="367.2" fill="none" stroke="#38BDF8" stroke-width="1" opacity="0.18"/>
+  <line x1="537.6" y1="259.2" x2="633.6" y2="367.2" stroke="#38BDF8" stroke-width="1.2" opacity="0.18"/>
+  <line x1="1382.4" y1="280.8" x2="1286.4" y2="378.0" stroke="#38BDF8" stroke-width="1.2" opacity="0.18"/>
+  <circle cx="537.6" cy="259.2" r="3.2" fill="#FBBF24" opacity="0.72"/>
+  <circle cx="633.6" cy="367.2" r="2.4" fill="#38BDF8" opacity="0.72"/>
+  <circle cx="480.0" cy="712.8" r="2.8" fill="#FDA4AF" opacity="0.72"/>
+  <circle cx="614.4" cy="777.6" r="2.2" fill="#38BDF8" opacity="0.72"/>
+  <circle cx="1382.4" cy="280.8" r="3.2" fill="#FBBF24" opacity="0.72"/>
+  <circle cx="1286.4" cy="378.0" r="2.4" fill="#38BDF8" opacity="0.72"/>
+  <circle cx="1440.0" cy="691.2" r="2.8" fill="#FDA4AF" opacity="0.72"/>
+  <circle cx="1305.6" cy="788.4" r="2.4" fill="#FBBF24" opacity="0.72"/>
+  <g transform="translate(722.4, 248.4) scale(0.9281)">
+    <ellipse cx="256" cy="454" rx="84" ry="13" fill="#38BDF8" opacity="0.24"/>
+    <g transform="rotate(-3 256 256)">
+      <path d="M 256.0,78.0 C 176.0,78.0 124.0,134.0 124.0,220.0 C 124.0,286.0 116.0,336.0 118.0,368.0 C 120.0,412.0 176.0,420.0 206.0,384.0 C 226.0,424.0 286.0,424.0 306.0,384.0 C 336.0,420.0 392.0,412.0 394.0,368.0 C 396.0,336.0 388.0,286.0 388.0,220.0 C 388.0,134.0 336.0,78.0 256.0,78.0 Z" fill="none" stroke="#38BDF8" stroke-width="24" stroke-linejoin="round" opacity="0.55" filter="url(#wpd1920x1080-glow)"/>
+      <path d="M 256.0,78.0 C 176.0,78.0 124.0,134.0 124.0,220.0 C 124.0,286.0 116.0,336.0 118.0,368.0 C 120.0,412.0 176.0,420.0 206.0,384.0 C 226.0,424.0 286.0,424.0 306.0,384.0 C 336.0,420.0 392.0,412.0 394.0,368.0 C 396.0,336.0 388.0,286.0 388.0,220.0 C 388.0,134.0 336.0,78.0 256.0,78.0 Z" fill="none" stroke="#38BDF8" stroke-width="17" stroke-linejoin="round" opacity="0.9"/>
+      <path d="M 256.0,78.0 C 176.0,78.0 124.0,134.0 124.0,220.0 C 124.0,286.0 116.0,336.0 118.0,368.0 C 120.0,412.0 176.0,420.0 206.0,384.0 C 226.0,424.0 286.0,424.0 306.0,384.0 C 336.0,420.0 392.0,412.0 394.0,368.0 C 396.0,336.0 388.0,286.0 388.0,220.0 C 388.0,134.0 336.0,78.0 256.0,78.0 Z" fill="url(#wpd1920x1080-body-grad)" stroke="#0F172A" stroke-width="13" stroke-linejoin="round"/>
+      <path d="M 162.00,174.00 L 163.49,165.61 L 165.69,157.70 L 168.54,150.26 L 172.00,143.31 L 176.02,136.86 L 180.56,130.90 L 185.57,125.44 L 191.00,120.50 L 196.80,116.07 L 202.94,112.16 L 209.35,108.78 L 216.00,105.94 L 222.84,103.63 L 229.81,101.87 L 236.88,100.66 L 244.00,100.00 L 244.00,100.00 L 238.40,103.47 L 232.88,107.13 L 227.45,111.00 L 222.16,115.06 L 217.01,119.34 L 212.04,123.84 L 207.28,128.55 L 202.75,133.50 L 198.48,138.68 L 194.49,144.10 L 190.81,149.77 L 187.47,155.69 L 184.49,161.86 L 181.90,168.30 L 179.73,175.01 L 178.00,182.00 Z" fill="#FFFFFF" opacity="0.82"/>
+      <path d="M 122,262 C 98,270 98,308 128,308" fill="#F8FAFC" stroke="#0F172A" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/>
+      <ellipse cx="170" cy="256" rx="22" ry="12.5" fill="#FDA4AF" opacity="0.78"/>
+      <ellipse cx="338" cy="256" rx="22" ry="12.5" fill="#FDA4AF" opacity="0.78"/>
+      <ellipse cx="204" cy="222" rx="22" ry="27" fill="#0F172A"/>
+      <circle cx="195" cy="210" r="8.5" fill="#FFFFFF"/>
+      <circle cx="212" cy="231" r="3.8" fill="#FFFFFF"/>
+      <ellipse cx="302" cy="222" rx="22" ry="27" fill="#0F172A"/>
+      <circle cx="293" cy="210" r="8.5" fill="#FFFFFF"/>
+      <circle cx="310" cy="231" r="3.8" fill="#FFFFFF"/>
+      <path d="M 230,260 C 242,282 266,282 278,260" fill="none" stroke="#0F172A" stroke-width="10" stroke-linecap="round"/>
+      <path d="M 341.70,286.64 L 327.48,300.92 L 312.54,324.02 L 338.56,315.11 L 355.86,304.76 Z" fill="url(#wpd1920x1080-nib-grad)" stroke="#0F172A" stroke-width="8" stroke-linejoin="round"/>
+      <line x1="315.7" y1="321.6" x2="335.4" y2="306.2" stroke="#0F172A" stroke-width="4" stroke-linecap="round"/>
+      <circle cx="337.8" cy="304.3" r="3.6" fill="#0F172A"/>
+      <path d="M 348.04,278.51 L 432.80,214.83 L 445.96,212.17 L 453.34,221.62 L 447.58,233.74 L 365.28,300.58 Z" fill="url(#wpd1920x1080-pen-grad)" stroke="#0F172A" stroke-width="9" stroke-linejoin="round"/>
+      <path d="M 359.00,276.30 L 427.70,224.53 L 430.16,227.68 L 361.77,279.84 Z" fill="#E0F2FE" opacity="0.78"/>
+      <path d="M 340.78,285.46 L 349.62,277.28 L 366.86,299.35 L 356.79,305.95 Z" fill="#FBBF24" stroke="#0F172A" stroke-width="7" stroke-linejoin="round"/>
+      <ellipse cx="366" cy="284" rx="26" ry="20" transform="rotate(-14 366 284)" fill="#F8FAFC" stroke="#0F172A" stroke-width="11"/>
+      <path d="M 426.00,104.00 L 431.77,122.23 L 450.00,128.00 L 431.77,133.77 L 426.00,152.00 L 420.23,133.77 L 402.00,128.00 L 420.23,122.23 Z" fill="#FBBF24" stroke="#0F172A" stroke-width="4.5" stroke-linejoin="round"/>
+      <path d="M 456.00,169.00 L 459.61,180.39 L 471.00,184.00 L 459.61,187.61 L 456.00,199.00 L 452.39,187.61 L 441.00,184.00 L 452.39,180.39 Z" fill="#38BDF8" stroke="#0F172A" stroke-width="3.5" stroke-linejoin="round"/>
+      <path d="M 94.00,132.00 L 97.37,142.63 L 108.00,146.00 L 97.37,149.37 L 94.00,160.00 L 90.63,149.37 L 80.00,146.00 L 90.63,142.63 Z" fill="#FBBF24" stroke="#0F172A" stroke-width="3.5" stroke-linejoin="round"/>
+      <circle cx="299" cy="340" r="6" fill="#38BDF8" stroke="#0F172A" stroke-width="3"/>
+      <circle cx="283" cy="350" r="4" fill="#FBBF24"/>
+    </g>
+  </g>
+  <text x="960.0" y="820.8" text-anchor="middle" fill="#F8FAFC" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="48" font-weight="800" letter-spacing="10">CASPER</text>
+  <text x="960.0" y="869.4" text-anchor="middle" fill="#94A3B8" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="18" font-weight="600" letter-spacing="3">FRIENDLY GHOSTWRITER</text>
+</svg>

@@ -1,0 +1,56 @@
+id: decision_memo
+goal: Present context, recommendation, evidence, risks, and approval ask.
+compatible_modalities:
+- memo
+- email
+- article
+- plain
+default_target_personas:
+- executive
+- management
+- engineering
+sections:
+- name: context
+  heading: Context
+  purpose: Background and current state
+  required: true
+  fact_kinds:
+  - background
+  - status
+  min_words: 10
+  max_words: 200
+- name: recommendation
+  heading: Recommendation
+  purpose: Proposed decision
+  required: true
+  fact_kinds:
+  - decision
+  min_words: 5
+  max_words: 180
+- name: evidence
+  heading: Evidence
+  purpose: Metrics and supporting details
+  required: false
+  fact_kinds:
+  - metric
+  - detail
+  - progress
+  min_words: 0
+  max_words: 250
+- name: risks
+  heading: Risks
+  purpose: Trade-offs and mitigations
+  required: false
+  fact_kinds:
+  - risk
+  min_words: 0
+  max_words: 180
+- name: asks
+  heading: Next Steps & Asks
+  purpose: Requested sign-off and follow-up
+  required: false
+  fact_kinds:
+  - ask
+  - next_step
+  min_words: 0
+  max_words: 120

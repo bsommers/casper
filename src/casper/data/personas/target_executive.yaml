@@ -1,0 +1,33 @@
+id: executive
+kind: target
+priorities:
+- strategy
+- revenue
+- decision
+- risk
+vocabulary_include:
+- outcome
+- impact
+- decision
+- milestone
+vocabulary_avoid:
+- mutex
+- schema
+- refactor
+- endpoint
+detail_depth: low
+jargon_level: low
+framing_patterns:
+- executive_brief
+typical_concerns:
+- revenue
+- compliance
+- slip
+cta_styles:
+- approval
+- decision
+section_priority:
+- status
+- recommendation
+- risks
+- asks

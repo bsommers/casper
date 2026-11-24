@@ -1,0 +1,391 @@
+schema_version: 1
+author:
+  id: bill
+  display_name: Bill
+  aliases:
+  - William
+generated:
+  tool: casper
+  tool_version: 0.1.0
+  date: '2026-11-24T02:10:49Z'
+  spacy_model: en_core_web_sm
+  corpus_sha256: a494040728d8d1f5c080c6b2278fde09083a8a05d16c4c8e256b48a75dcb25d0
+  body_sha256: 6bdb35083de57c629e38dda1d0f51c34dc5a92d8b3067209a99d563e0e080a9e
+corpus:
+  document_count: 4
+  total_words: 711
+  avg_doc_words: 177.75
+style_guide:
+- id: sentences
+  area: sentences
+  rule: Target mean sentence length of 14.9 words (median 15.0, p10–p90 8–21); keep short (<=8w) rate
+    near 12% and passive rate near 4%.
+- id: paragraphs
+  area: paragraphs
+  rule: Average 3.00 sentences and 44.6 words per paragraph; single-sentence paragraph rate 0%, long (>=120w)
+    rate 0%.
+- id: lexical
+  area: lexical
+  rule: Maintain Flesch-Kincaid grade 13.0 (reading ease 28.2), mean word length 5.90 chars, and 7.0 acronyms/1k.
+- id: voice
+  area: voice
+  rule: Use POV rates/1k of 1st-singular 0.0, 1st-plural 4.2, 2nd-person 2.8; contractions 0.0/1k and
+    negations 12.7/1k.
+- id: punctuation
+  area: punctuation
+  rule: Use 71.7 commas/1k (Oxford comma rate 88%), em dashes 0.0/1k, colons 1.4/1k, semicolons 2.8/1k,
+    parentheticals 0.0/1k.
+- id: rhetoric
+  area: rhetoric
+  rule: Pace transitions at 7.0/1k, intensifiers at 1.4/1k, hedges at 1.4/1k, and contrast frames at 1.4/1k.
+- id: headings
+  area: headings
+  rule: Use title case headings averaging 3.4 words at 16.88 headings/1k words.
+- id: structure
+  area: structure
+  rule: Target ~178 words across ~3.0 sections with summary presence rate 0%.
+sentences:
+  count: 48
+  length_words:
+    mean: 14.8542
+    median: 15.0
+    p10: 8.0
+    p90: 21.0
+    stdev: 4.8113
+  short_rate_le8: 0.125
+  long_rate_ge30: 0.0
+  burstiness_cv: 0.3239
+  passive_rate: 0.0417
+  subordinate_clauses_per_sentence: 0.8958
+  commas_per_sentence: 1.0625
+  fragment_rate: 0.1458
+  question_rate: 0.0
+  exclamation_rate: 0.0
+  starts:
+    conjunction_rate: 0.0833
+    pronoun_rate: 0.125
+    adverb_or_transition_rate: 0.0833
+    top_first_words:
+    - - When
+      - 4
+    - - Clear
+      - 3
+    - - Short
+      - 2
+    - - That
+      - 2
+    - - We
+      - 2
+    - - A
+      - 1
+    - - Automated
+      - 1
+    - - Automatic
+      - 1
+    - - Break
+      - 1
+    - - Calm
+      - 1
+paragraphs:
+  count: 16
+  sentences_per_paragraph:
+    mean: 3.0
+    median: 3.0
+  words_per_paragraph:
+    mean: 44.5625
+    median: 44.0
+  single_sentence_rate: 0.0
+  long_paragraph_rate_ge120w: 0.0
+lexical:
+  words: 711
+  flesch_kincaid_grade: 13.0068
+  flesch_reading_ease: 28.1927
+  mean_word_length: 5.8973
+  long_word_rate_ge7: 0.3896
+  acronyms_per_1k: 7.0323
+voice:
+  person_per_1k:
+    first_singular: 0.0
+    first_plural_inclusive: 4.2194
+    second: 2.8129
+    third_plural: 8.4388
+  contractions_per_1k: 0.0
+  negations_per_1k: 12.6582
+  punctuation_per_1k:
+    em_dash: 0.0
+    colon: 1.4065
+    semicolon: 2.8129
+    parenthetical: 0.0
+    quotes: 0.0
+  commas_per_1k: 71.73
+  oxford_comma_rate: 0.875
+  lexicon_per_1k:
+    transitions: 7.0323
+    intensifiers: 1.4065
+    hedges: 1.4065
+  rhetoric:
+    contrast_frames_per_1k: 1.4065
+    acronym_introductions: 0
+typography:
+  quote_style: straight
+  links_per_1k: 0.0
+headings:
+  count: 12
+  density_per_1k: 16.8776
+  mean_words: 3.4167
+  case_style: title
+  case_shares:
+    sentence: 0.0
+    title: 1.0
+    upper: 0.0
+lists:
+  item_count: 0
+  items_per_1k: 0.0
+  emphasis_lead_rate: 0.0
+structure:
+  mean_doc_words: 177.75
+  mean_sections: 3.0
+  has_summary_rate: 0.0
+  closing_patterns:
+  - reflection
+function_word_per_1k:
+  the: 12.6582
+  be: 0.0
+  to: 8.4388
+  of: 5.6259
+  and: 46.4135
+  a: 21.097
+  in: 7.0323
+  that: 4.2194
+  have: 1.4065
+  i: 0.0
+  it: 1.4065
+  for: 2.8129
+  not: 1.4065
+  'on': 4.2194
+  with: 4.2194
+  he: 0.0
+  as: 2.8129
+  you: 1.4065
+  do: 1.4065
+  at: 1.4065
+  this: 0.0
+  but: 0.0
+  his: 0.0
+  by: 0.0
+  from: 7.0323
+  they: 4.2194
+  we: 2.8129
+  say: 0.0
+  her: 0.0
+  she: 0.0
+  or: 5.6259
+  an: 2.8129
+  will: 0.0
+  my: 0.0
+  one: 1.4065
+  all: 0.0
+  would: 0.0
+  there: 0.0
+  their: 0.0
+  what: 1.4065
+  so: 1.4065
+  up: 0.0
+  out: 1.4065
+  if: 0.0
+  about: 2.8129
+  who: 0.0
+  get: 0.0
+  which: 1.4065
+  go: 0.0
+  me: 0.0
+  when: 12.6582
+  make: 0.0
+  can: 1.4065
+  like: 0.0
+  time: 4.2194
+  'no': 0.0
+  just: 0.0
+  him: 0.0
+  know: 0.0
+  take: 0.0
+signature:
+  recurring_phrases:
+  - a real
+  - before they
+  - instead of
+  - when every
+  bounded_phrases: []
+  sentence_frames: []
+exemplars:
+  openers:
+  - Start with the constraint that matters most.
+  - Good status updates respect the reader's time.
+  - Local-first tools earn developer trust because they stay fast, predictable, and private.
+  - Healthy codebases preserve clean dependency direction.
+  closers:
+  - Should a stage fail under load, the failure mode stays obvious, observable, and strictly contained
+    within a single service boundary.
+  - Clear, grounded writing builds trust across engineering, product, and leadership every week.
+  - Fast local feedback catches mistakes before they ever reach shared branches.
+  - Calm engineering comes from proof rather than optimism, and reliable automation makes high standards
+    effortless to maintain.
+  short_lines:
+  - Start with the constraint that matters most.
+  - Measure the change before expanding scope.
+  - Short feedback loops keep teams aligned.
+  - Good status updates respect the reader's time.
+stability:
+  mean_sentence_length:
+    min: 13.5
+    max: 16.4545
+    stdev: 1.4396
+  short_sentence_rate:
+    min: 0.0
+    max: 0.2143
+    stdev: 0.0909
+  long_sentence_rate:
+    min: 0.0
+    max: 0.0
+    stdev: 0.0
+  sentence_length_cv:
+    min: 0.2894
+    max: 0.3906
+    stdev: 0.0473
+  passive_rate:
+    min: 0.0
+    max: 0.0769
+    stdev: 0.0429
+  commas_per_sentence:
+    min: 0.7143
+    max: 1.3077
+    stdev: 0.2831
+  subordinate_clauses_per_sentence:
+    min: 0.8462
+    max: 1.0
+    stdev: 0.0702
+  fragment_rate:
+    min: 0.0
+    max: 0.2727
+    stdev: 0.1292
+  question_rate:
+    min: 0.0
+    max: 0.0
+    stdev: 0.0
+  exclamation_rate:
+    min: 0.0
+    max: 0.0
+    stdev: 0.0
+  conjunction_start_rate:
+    min: 0.0714
+    max: 0.1
+    stdev: 0.013
+  pronoun_start_rate:
+    min: 0.0
+    max: 0.2857
+    stdev: 0.1216
+  transition_start_rate:
+    min: 0.0714
+    max: 0.1
+    stdev: 0.013
+  sentences_per_paragraph:
+    min: 2.5
+    max: 3.5
+    stdev: 0.4564
+  single_sentence_paragraph_rate:
+    min: 0.0
+    max: 0.0
+    stdev: 0.0
+  flesch_kincaid_grade:
+    min: 11.8102
+    max: 14.84
+    stdev: 1.3591
+  mean_word_length:
+    min: 5.7735
+    max: 6.0625
+    stdev: 0.1199
+  long_word_rate:
+    min: 0.3757
+    max: 0.4033
+    stdev: 0.0114
+  acronyms_per_1k:
+    min: 0.0
+    max: 16.5746
+    stdev: 6.9319
+  first_person_singular_per_1k:
+    min: 0.0
+    max: 0.0
+    stdev: 0.0
+  first_person_plural_per_1k:
+    min: 0.0
+    max: 15.873
+    stdev: 7.9365
+  second_person_per_1k:
+    min: 0.0
+    max: 11.0497
+    stdev: 5.5248
+  contractions_per_1k:
+    min: 0.0
+    max: 0.0
+    stdev: 0.0
+  em_dashes_per_1k:
+    min: 0.0
+    max: 0.0
+    stdev: 0.0
+  colons_per_1k:
+    min: 0.0
+    max: 5.5249
+    stdev: 2.7624
+  semicolons_per_1k:
+    min: 0.0
+    max: 6.25
+    stdev: 3.412
+  parentheses_per_1k:
+    min: 0.0
+    max: 0.0
+    stdev: 0.0
+  commas_per_1k:
+    min: 52.9101
+    max: 93.9227
+    stdev: 18.7656
+  transitions_per_1k:
+    min: 5.291
+    max: 12.5
+    stdev: 3.5283
+  intensifiers_per_1k:
+    min: 0.0
+    max: 5.5249
+    stdev: 2.7624
+  hedges_per_1k:
+    min: 0.0
+    max: 5.5249
+    stdev: 2.7624
+  contrast_frames_per_1k:
+    min: 0.0
+    max: 6.25
+    stdev: 3.125
+sources:
+- title: Deterministic Pipelines in Practice
+  source: sample-01.md
+  byline: Bill
+  byline_matches_author: true
+  prose_words: 189
+  sha256: aed508f4aa8b5a0752d84c94af9e8ba1c66fd9390f53fa1da49b7c76ac99e6d1
+- title: Writing Clear Status Updates
+  source: sample-02.md
+  byline: Bill
+  byline_matches_author: true
+  prose_words: 181
+  sha256: 048d7a558f72b6e7a8ee40da25a8bc83f0bab26eeac3112a88f67f3a92c012fa
+- title: Designing Local-First Developer Tools
+  source: sample-03.md
+  byline: Bill
+  byline_matches_author: true
+  prose_words: 181
+  sha256: 2ce12e943e8bf01ec9e7db82a58361afad2df4fc17b4f1c3c1f6c7cb3f0c43b9
+- title: Reviewing Architecture Without Guesswork
+  source: sample-04.md
+  byline: Bill
+  byline_matches_author: true
+  prose_words: 160
+  sha256: 04cb709ea81d8aa29ce1ff768542bfa1977624208f0c9d297dde323b2da93491
